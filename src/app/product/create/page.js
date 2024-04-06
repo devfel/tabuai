@@ -205,14 +205,12 @@ const CreateBoardGamePage = () => {
           </label>
           <input type="text" minLength="3" maxLength="100" name="Title" id="Title" required value={formData.Title} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
-
         <div>
           <label htmlFor="Value" className="block text-sm font-medium text-gray-700">
             Valor (R$)
           </label>
           <input type="number" name="Value" id="Value" required min="5" max="20000" step="0.01" value={formData.Value} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
-
         <div>
           <label htmlFor="Idioma" className="block text-sm font-medium text-gray-700">
             Idioma
@@ -228,7 +226,6 @@ const CreateBoardGamePage = () => {
             <option value="Outros">Outros</option>
           </select>
         </div>
-
         <div className="relative" ref={tooltipRef}>
           <label htmlFor="Condition" className="block text-sm font-medium text-gray-700">
             Condição
@@ -291,14 +288,12 @@ const CreateBoardGamePage = () => {
             </div>
           )}
         </div>
-
         <div>
           <label htmlFor="Description" className="block text-sm font-medium text-gray-700">
             Detalhes da Condição
           </label>
           <textarea name="Description" id="Description" type="text" minLength="4" maxLength="4000" required value={formData.Description} onChange={handleChange} rows="4" className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700">Images</label>
           <input type="file" multiple accept="image/*" onChange={handleFileChange} className="mt-1 block w-full text-[#f7f7f7] text-transparent" />
@@ -307,7 +302,6 @@ const CreateBoardGamePage = () => {
           </p>
           <p className=" text-sm">Até 9 imagens de 3MB cada.</p>
         </div>
-
         <div className="grid grid-cols-3 gap-4">
           {images.map((image, index) => (
             <div key={index} className="relative cursor-pointer">
@@ -326,16 +320,14 @@ const CreateBoardGamePage = () => {
             </div>
           ))}
         </div>
-
         <div className="block font-medium">{images.length > 9 && <p className="text-red-600 font-semibold">Você pode enviar no máximo 9 imagens de 3MB cada.</p>}</div>
-
         <button
           type="submit"
           disabled={images.length === 0 || images.length > 9 || isSubmitting}
           className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${images.length === 0 || images.length > 9 || isSubmitting ? "cursor-not-allowed bg-gray-300 text-gray-800" : "bg-gray-800 hover:bg-gray-950 text-white"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
         >
           {isSubmitting ? <LoadingIndicator /> : "Cadastrar Anúncio"}
-        </button>
+        </button>{" "}
       </form>
       {showToast && <ToastBG message="O BoardGame foi adicionado com sucesso a sua lista de jogos! Clique aqui para ver a postagem." onDismiss={() => setShowToast(false)} gameId={createdGameId} />}
       {showToastError && <ToastBGError message="Erro ao Cadastrar Anúncio! Confira os limites das imagens e tente novamente." onDismiss={() => setShowToastError(false)} />}

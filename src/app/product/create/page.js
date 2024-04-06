@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import ToastBG from "../../components/ToastBG";
 import ToastBGError from "../../components/ToastBGError";
 import Link from "next/link";
+import LoadingIndicator from "../../components/LoadingIndicator";
 
 const CreateBoardGamePage = () => {
   const [images, setImages] = useState([]);
@@ -13,6 +14,7 @@ const CreateBoardGamePage = () => {
   const [createdGameId, setCreatedGameId] = useState(null);
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const tooltipRef = useRef(null); // Referência para o tooltip
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const clearForm = () => {
     setFormData({
@@ -64,6 +66,8 @@ const CreateBoardGamePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsSubmitting(true);
 
     if (images.length === 0) {
       alert("No images were found, please upload at least one image.");
@@ -120,6 +124,8 @@ const CreateBoardGamePage = () => {
     } catch (error) {
       setShowToastError(true);
       console.error("Erro no catch:", error);
+    } finally {
+      setIsSubmitting(false); // Stop loading regardless of outcome
     }
   };
 
@@ -325,10 +331,10 @@ const CreateBoardGamePage = () => {
 
         <button
           type="submit"
-          disabled={images.length === 0 || images.length > 9}
+          disabled={images.length === 0 || images.length > 9 || isSubmitting}
           className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${images.length === 0 || images.length > 9 ? "cursor-not-allowed bg-gray-300 text-gray-800" : "bg-gray-800 hover:bg-gray-950 text-white"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
         >
-          Cadastrar Anúncio
+          {isSubmitting ? <LoadingIndicator /> : "Cadastrar Anúncio"}
         </button>
       </form>
       {showToast && <ToastBG message="O BoardGame foi adicionado com sucesso a sua lista de jogos! Clique aqui para ver a postagem." onDismiss={() => setShowToast(false)} gameId={createdGameId} />}

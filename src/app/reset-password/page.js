@@ -1,7 +1,7 @@
 // src/app/reset-password/page.js
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import ToastSignin from "../components/ToastSignin";

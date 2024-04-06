@@ -332,7 +332,7 @@ const CreateBoardGamePage = () => {
         <button
           type="submit"
           disabled={images.length === 0 || images.length > 9 || isSubmitting}
-          className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${images.length === 0 || images.length > 9 ? "cursor-not-allowed bg-gray-300 text-gray-800" : "bg-gray-800 hover:bg-gray-950 text-white"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+          className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${images.length === 0 || images.length > 9 || isSubmitting ? "cursor-not-allowed bg-gray-300 text-gray-800" : "bg-gray-800 hover:bg-gray-950 text-white"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
         >
           {isSubmitting ? <LoadingIndicator /> : "Cadastrar Anúncio"}
         </button>

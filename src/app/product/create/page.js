@@ -332,7 +332,7 @@ const CreateBoardGamePage = () => {
         </button>
       </form>
       {showToast && <ToastBG message="O BoardGame foi adicionado com sucesso a sua lista de jogos! Clique aqui para ver a postagem." onDismiss={() => setShowToast(false)} gameId={createdGameId} />}
-      {showToastError && <ToastBGError message="Erro ao Cadastrar Anúncio! Possível image maior que o limite (Máx: 3MB por imagem)." onDismiss={() => setShowToastError(false)} />}
+      {showToastError && <ToastBGError message="Erro ao Cadastrar Anúncio! Confira os limites das imagens e tente novamente." onDismiss={() => setShowToastError(false)} />}
     </div>
   );
 };

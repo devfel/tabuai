@@ -6,7 +6,7 @@ export default function CondicaoBoardGames() {
     <main>
       <div className="max-w-2xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Condições dos Board Games</h1>
-        <p className="mt-2 text-justify text-gray-700">Neste espaço, valorizamos a transparência e a honestidade. Por isso, criamos com carinho um padrão de descrição do estado de conservação e condições dos jogos que reflete também nossas origens. "Eu sou mineiro uai!".</p>
+        <p className="mt-2 text-justify text-gray-700">Neste espaço, valorizamos a transparência e a honestidade. Por isso, criamos com carinho um padrão de descrição do estado de conservação e condições dos jogos que reflete também nossas origens. &quot;Eu sou mineiro uai!&quot;.</p>
         <p className="mt-2 text-justify text-gray-700">Pensamos em uma forma de facilitar a comunicação e garantir a satisfação de todos os envolvidos. As condições listadas aqui foram adaptadas de um consenso bastante utilizado por colecionadores de outros itens, inclusive de Trading Card Games.</p>
         <p className="mt-2 text-justify text-gray-700">Então, antes de comprar, e especialmente antes de fazer o anúncio do seu jogo, dê uma olhada em nosso guia abaixo. E assim que pegar um jogo já confira tudo, preferencialmente na frente do vendedor e antes de fazer o pagamento. </p>
         <p className="mt-2 text-justify text-gray-700">
@@ -73,13 +73,13 @@ export default function CondicaoBoardGames() {
 
           <div>
             <h3 className="text-xl font-semibold text-gray-900">Quinem da loja (Lacrado - M)</h3>
-            <p className="mt-2 text-justify text-gray-700">"Quinem da loja" é como se o jogo nunca tivesse visto a luz do dia. Tá lacrado, com aquele cheirinho de novo (ou, parafraseando o Paulo "Aquele cheirinho de board game novo que a gente tanto gosta!") e sem nenhum arranhão. É o sonho de consumo.</p>
+            <p className="mt-2 text-justify text-gray-700">&quot;Quinem da loja&quot; é como se o jogo nunca tivesse visto a luz do dia. Tá lacrado, com aquele cheirinho de novo (ou, parafraseando o Paulo &quot;Aquele cheirinho de board game novo que a gente tanto gosta!&quot;) e sem nenhum arranhão. É o sonho de consumo.</p>
           </div>
 
           <div>
             <h3 className="text-xl font-semibold text-gray-900">Só abri pá vê (Nunca Jogado - NM)</h3>
-            <p className="mt-2 text-justify text-gray-700">Já abri a caixa, mas juro que foi "só pá vê". O jogo tá novo, sem marcas de uso e com todos os componentes brilhando. Pode ter sido tocado algumas vezes, mas com muito amor e nem chegou a ser jogado. </p>
-            <p className="mt-2 text-justify text-gray-700">Também são os casos dos jogos que não estão mais lacrados mas estão intactos, até com os "punch boards" não destacados, por exemplo.</p>
+            <p className="mt-2 text-justify text-gray-700">Já abri a caixa, mas juro que foi &quot;só pá vê&quot;. O jogo tá novo, sem marcas de uso e com todos os componentes brilhando. Pode ter sido tocado algumas vezes, mas com muito amor e nem chegou a ser jogado. </p>
+            <p className="mt-2 text-justify text-gray-700">Também são os casos dos jogos que não estão mais lacrados mas estão intactos, até com os &quot;punch boards&quot; não destacados, por exemplo.</p>
           </div>
 
           <div>
@@ -89,12 +89,12 @@ export default function CondicaoBoardGames() {
 
           <div>
             <h3 className="text-xl font-semibold text-gray-900">Rodou um cado (Moderadamente Jogado - MP)</h3>
-            <p className="mt-2 text-justify text-gray-700">Esse aqui "rodou um cado". Mostra que viveu boas histórias, com sinais de uso mais evidentes, componentes que podem estar um pouco mais desgastados ou superfície de cartas e outros "trem" que já viram dias melhores. Mas ó, ainda tá valendo a pena para muita diversão. Claro, tudo com um preço mais camarada né!?</p>
+            <p className="mt-2 text-justify text-gray-700">Esse aqui &quot;rodou um cado&quot;. Mostra que viveu boas histórias, com sinais de uso mais evidentes, componentes que podem estar um pouco mais desgastados ou superfície de cartas e outros "trem" que já viram dias melhores. Mas ó, ainda tá valendo a pena para muita diversão. Claro, tudo com um preço mais camarada né!?</p>
           </div>
 
           <div>
             <h3 className="text-xl font-semibold text-gray-900">Surradinho (Muito Jogado - HP)</h3>
-            <p className="mt-2 text-justify text-gray-700">"Surradinho" é para os bravos. Tem história para contar, com marcas de uso bem visíveis ou mofo leve, talvez até uns defeitos maiorzim aqui e ali. </p>
+            <p className="mt-2 text-justify text-gray-700">&quot;Surradinho&quot; é para os bravos. Tem história para contar, com marcas de uso bem visíveis ou mofo leve, talvez até uns defeitos maiorzim aqui e ali. </p>
             <p className="mt-2 text-justify text-gray-700">Pode conter inclusive componentes faltando ou um pouco avariado, desde que não interfira em nada no jogo. Ideal para quem não liga para a aparência e só quer jogar.</p>
           </div>
 

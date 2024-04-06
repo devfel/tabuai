@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import ToastSignin from "../components/ToastSignin";
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [showToast, setShowToast] = useState(false);
@@ -72,5 +72,13 @@ export default function ResetPasswordPage() {
       </form>
       {showToast && <ToastSignin message={toastMessage} onDismiss={() => setShowToast(false)} />}
     </div>
+  );
+}
+
+export default function ResetPasswordPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }

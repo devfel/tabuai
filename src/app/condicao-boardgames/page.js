@@ -89,7 +89,7 @@ export default function CondicaoBoardGames() {
 
           <div>
             <h3 className="text-xl font-semibold text-gray-900">Rodou um cado (Moderadamente Jogado - MP)</h3>
-            <p className="mt-2 text-justify text-gray-700">Esse aqui &quot;rodou um cado&quot;. Mostra que viveu boas histórias, com sinais de uso mais evidentes, componentes que podem estar um pouco mais desgastados ou superfície de cartas e outros "trem" que já viram dias melhores. Mas ó, ainda tá valendo a pena para muita diversão. Claro, tudo com um preço mais camarada né!?</p>
+            <p className="mt-2 text-justify text-gray-700">Esse aqui &quot;rodou um cado&quot;. Mostra que viveu boas histórias, com sinais de uso mais evidentes, componentes que podem estar um pouco mais desgastados ou superfície de cartas e outros &quot;trem&quot; que já viram dias melhores. Mas ó, ainda tá valendo a pena para muita diversão. Claro, tudo com um preço mais camarada né!?</p>
           </div>
 
           <div>

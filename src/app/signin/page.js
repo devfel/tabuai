@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 import Link from "next/link";
 import ToastSignin from "../components/ToastSignin";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const SigninPage = () => {
   const { login } = useAuth();
@@ -16,9 +17,11 @@ const SigninPage = () => {
   const router = useRouter();
   const [showToastSignin, setShowToastSignin] = useState(false);
   const [accCreatedSuccess, setaccCreatedSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     // Create the payload object with mandatory fields
     let payload = {
@@ -55,6 +58,8 @@ const SigninPage = () => {
       console.error("Error logging in:", error);
       setaccCreatedSuccess(false);
       setShowToastSignin(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -132,8 +137,14 @@ const SigninPage = () => {
           </p>
           <p className="block mb-1 text-xs text-gray-700">No momento, essa é a única forma de contato entre os usuários.</p>
         </div>
-        <button type="submit" className="w-full bg-gray-800 border border-transparent rounded-md py-2 px-2 font-medium text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed">
-          Criar Conta
+        <button type="submit" disabled={isLoading} className="w-full bg-gray-800 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed">
+          {isLoading ? (
+            <div className="flex justify-center items-center">
+              <LoadingIndicator /> Criando Conta...
+            </div>
+          ) : (
+            "Criar Conta"
+          )}
         </button>
         <Link type="button" href="/login" className="w-full flex justify-center align-middle bg-gray-200 border-2 border-gray-800 rounded-md py-2 px-2 font-medium text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed mt-2">
           Já tenho uma conta

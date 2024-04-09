@@ -1,6 +1,7 @@
 // project/src/app/page.js
 "use client";
 import Card from "./components/Card";
+import LoadingIndicator from "./components/LoadingIndicator";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -10,11 +11,13 @@ export default function Home() {
   const [totalPages, setTotalPages] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredGames, setFilteredGames] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const ITEMS_PER_PAGE = 9;
   const MAX_ITEMS_TOTAL = 900;
 
   useEffect(() => {
     async function fetchGames() {
+      setIsLoading(true); // Start loading
       try {
         // Fetch all board games with images considering the max total of items in the constant (ignore pagination). Issue here, need to do proper pagination and filtering at same time.
         const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/board-games?populate=*&pagination[page]=1&pagination[pageSize]=${MAX_ITEMS_TOTAL}&sort=id:desc`);
@@ -44,13 +47,15 @@ export default function Home() {
           .filter((game) => game.statusActive); // Filters out games where statusActive is false
 
         setBoardGames(games);
+        setIsLoading(false); // Stop loading after processing data
 
-        // No fetchGames, após receber e processar os jogos
+        // Após receber e processar os jogos
         const totalCount = games.length;
         const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
         setTotalPages(totalPages);
       } catch (error) {
         console.error("Failed to load board games:", error);
+        setIsLoading(false); // Ensure loading is stopped even if there's an error
       }
     }
 
@@ -101,11 +106,17 @@ export default function Home() {
             Não conhece esse trem? Uai, clica aqui sô!
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 md:justify-items-stretch lg:justify-items-stretch justify-items-center">
-          {filteredGames.map((game) => (
-            <Card key={game.id} game={game} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <LoadingIndicator /> Carregando Jogos...
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 md:justify-items-stretch lg:justify-items-stretch justify-items-center">
+            {filteredGames.map((game) => (
+              <Card key={game.id} game={game} />
+            ))}
+          </div>
+        )}
         <div className="pagination-controls">
           <div className="flex items-center justify-center gap-1 mt-8 ">
             {/* Previous Button */}

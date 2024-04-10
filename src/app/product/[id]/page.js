@@ -290,8 +290,8 @@ const ProductPage = ({ params }) => {
           </div>
           {/* Product info */}
           <div className="mt-8 px-4 sm:px-0 sm:mt-16 lg:mt-0 lg:col-start-2 lg:col-span-1">
-            <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">{game.name}</h2>
-            <p className="mt-5 text-3xl text-gray-900">{`R$ ${game.price.toFixed(2)}`}</p>
+            <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200">{game.name}</h2>
+            <p className="mt-5 text-3xl text-gray-900 dark:text-gray-200">{`R$ ${game.price.toFixed(2)}`}</p>
             <div className="mt-5 flex items-center text-[1.02rem] text-gray-700">
               <span className="mr-2">Idioma:</span> <span className="font-bold mr-2">{game.idioma || "Não especificado"}</span>
               <LanguageFlag idioma={game.idioma} />

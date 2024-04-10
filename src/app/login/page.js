@@ -63,7 +63,7 @@ const LoginPage = () => {
             Esqueci a senha.
           </Link>
         </div>
-        <button type="submit" className={`w-full bg-gray-800 border border-transparent rounded-md py-2 px-2 font-medium text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 ${isLoggingIn ? "disabled:bg-gray-400 disabled:cursor-not-allowed" : ""}`} disabled={isLoggingIn}>
+        <button type="submit" className={`w-full bg-gray-800 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 flex justify-center items-center space-x-2 ${isLoggingIn ? "disabled:bg-gray-400 disabled:cursor-not-allowed" : ""}`} disabled={isLoggingIn}>
           {isLoggingIn ? (
             <>
               <LoadingIndicator /> <span>Entrando...</span>

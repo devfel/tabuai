@@ -20,7 +20,9 @@ const ProductPage = ({ params }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCreatingOffer, setIsCreatingOffer] = useState(false);
+
   const [createOffer, setCreateOffer] = useState(null);
   const [showToastOferta, setShowToastOferta] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
@@ -88,6 +90,7 @@ const ProductPage = ({ params }) => {
   useEffect(() => {
     const createOferta = async () => {
       setIsOfferButtonDisabled(true);
+
       if (!createOffer) {
         // Habilita o botão se createOffer for nulo
         setIsOfferButtonDisabled(false);
@@ -105,6 +108,7 @@ const ProductPage = ({ params }) => {
       }
 
       try {
+        setIsCreatingOffer(true);
         const response = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/ofertas?populate[board_game]=*`, {
           method: "POST",
           headers: {
@@ -125,6 +129,7 @@ const ProductPage = ({ params }) => {
         }
 
         const result = await response.json();
+        setIsCreatingOffer(false);
         //router.push("/dashboard"); // Redirect to dashboard after creating the offer
         setShowToastOferta(true);
         setRefreshPage(true);
@@ -132,6 +137,7 @@ const ProductPage = ({ params }) => {
       } catch (error) {
         console.error("Error creating offer:", error);
         setIsOfferButtonDisabled(false);
+        setIsCreatingOffer(false);
         // Handle error (e.g., show an error message)
       }
     };
@@ -150,7 +156,9 @@ const ProductPage = ({ params }) => {
 
   // AFTER LOADING GAME DATA
   if (isLoading) {
-    return <></>; // Return nothing for now while loading
+    <div className="flex justify-center items-center h-64">
+      <LoadingIndicator /> Carregando Jogo...
+    </div>;
   }
   if (!game) {
     return <p>Jogo não encontrado!</p>;
@@ -317,7 +325,7 @@ const ProductPage = ({ params }) => {
                 onClick={handleOfferSubmit}
                 disabled={isLoggedIn && (isOfferButtonDisabled || offerValue <= 0 || !game.statusActive)} // disable the button if offerValue is 0 or negative
               >
-                Fazer Oferta
+                {isLoading ? <LoadingIndicator /> + " Salvando Oferta..." : "Fazer Oferta"}
               </button>
             </div>
           </div>

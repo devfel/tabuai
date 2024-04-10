@@ -61,23 +61,23 @@ function OwnerOfertaCard({ game, onOfferDeleted }) {
       <Link href={`/product/${game.id}`} passHref>
         <h5 className="text-2xl font-bold text-black hover:text-gray-700 hover:underline transition-colors duration-200 ease-in-out">{Title}</h5>
       </Link>
-      <div className="mt-2 text-lg">
+      <div className="mt-2 text-lg dark:text-gray-700">
         {!active && <p className="font-bold text-center text-2xl text-red-600"> DESATIVADO / VENDIDO </p>}
         <p>
-          Dono: <span className="font-semibold">{ownerUsername}</span>{" "}
+          Dono: <span className="font-semibold dark:text-gray-700">{ownerUsername}</span>{" "}
         </p>
         <p>
-          E-mail: <span className="font-semibold"> {ownerEmail}</span>{" "}
+          E-mail: <span className="font-semibold dark:text-gray-700"> {ownerEmail}</span>{" "}
         </p>
         <p>
-          Whatsapp: <span className="font-semibold"> {ownerWhatsapp}</span>{" "}
+          Whatsapp: <span className="font-semibold dark:text-gray-700"> {ownerWhatsapp}</span>{" "}
         </p>
         <p>
-          Preço: <span className="font-semibold">R$ {Value.toFixed(2)}</span>{" "}
+          Preço: <span className="font-semibold dark:text-gray-700">R$ {Value.toFixed(2)}</span>{" "}
         </p>
 
-        <p className="text-right text-sm">
-          Maior Oferta no Produto: <span className="font-semibold">R$ {MaiorOferta?.toFixed(2)}</span>{" "}
+        <p className="text-right text-sm dark:text-gray-700">
+          Maior Oferta no Produto: <span className="font-semibold dark:text-gray-700">R$ {MaiorOferta?.toFixed(2)}</span>{" "}
         </p>
       </div>
 
@@ -99,8 +99,8 @@ function OwnerOfertaCard({ game, onOfferDeleted }) {
                       Cancelar Oferta
                     </button>{" "}
                   </td>
-                  <td className="px-2 py-1 text-center">{offer.DataCriacao}</td>
-                  <td className="px-2 py-1 text-right">R$ {offer.ValorOferta.toFixed(2)}</td>
+                  <td className="px-2 py-1 text-center dark:text-gray-700">{offer.DataCriacao}</td>
+                  <td className="px-2 py-1 text-right dark:text-gray-700">R$ {offer.ValorOferta.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>

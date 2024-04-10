@@ -102,7 +102,7 @@ export default function Home() {
       <main>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 md:justify-items-stretch lg:justify-items-stretch justify-items-center items-center">
           <input className="text-black px-4 py-2 w-full md:w-auto max-w-80 rounded-lg " placeholder="Buscar jogo..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />{" "}
-          <Link href="/about" className="w-auto text-gray-800 px-2 hover:underline hover:text-gray-950 text-sm">
+          <Link href="/about" className="w-auto text-gray-800 px-2 hover:underline hover:text-gray-950 text-sm dark:text-gray-300">
             Não conhece esse trem? Uai, clica aqui sô!
           </Link>
         </div>

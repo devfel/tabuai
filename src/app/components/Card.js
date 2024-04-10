@@ -10,12 +10,12 @@ function Card({ game }) {
         </div>
         <div className="p-5" style={{ height: "220px" }}>
           {/* Handle long game names with ellipsis */}
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: "2", WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-800 dark:text-white overflow-hidden" style={{ display: "-webkit-box", WebkitLineClamp: "2", WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
             {game.name}
           </h5>
 
           <p className="mb-4 text-2xl ">
-            Valor: <span className="font-semibold">{`R$ ${game.price.toFixed(2)}`}</span>
+            Valor: <span className="font-semibold dark:text-gray-400">{`R$ ${game.price.toFixed(2)}`}</span>
           </p>
           <p className=" text-sm ">
             Idioma: <span className="font-semibold">{`${game.idioma}`}</span>

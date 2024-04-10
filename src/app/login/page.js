@@ -52,13 +52,13 @@ const LoginPage = () => {
           <label htmlFor="email" className="block mb-1">
             Email
           </label>
-          <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} className="w-full border p-2 rounded-lg" required />
+          <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         <div>
           <label htmlFor="password" className="block mb-1">
             Password
           </label>
-          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 rounded-lg" required />
+          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
           <Link href="/forgot-password" className="w-full flex justify-left text-sm text-gray-400 hover:underline hover:text-gray-500">
             Esqueci a senha.
           </Link>

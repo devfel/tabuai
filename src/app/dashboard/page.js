@@ -165,7 +165,7 @@ export default function Dashboard() {
             </>
           </div>
         ) : (
-          <div className="p-4 my-2 bg-gray-100 border border-gray-200 rounded-lg">
+          <div className="p-4 my-2 bg-gray-100 border border-gray-200 rounded-lg dark:text-gray-700">
             <p>Usuário: {userDataState ? userDataState.nomeUsuario : "Loading..."}</p>
             <p>Email: {userDataState ? userDataState.email : ""}</p>
             <p>WhatsApp: {userDataState ? userDataState.whatsapp : ""}</p>

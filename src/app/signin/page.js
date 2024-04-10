@@ -98,13 +98,13 @@ const SigninPage = () => {
           <label htmlFor="nomeUsuario" className="block mb-1">
             Nome Completo
           </label>
-          <input id="nomeUsuario" minLength="3" maxLength="40" type="text" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 rounded-lg" required />
+          <input id="nomeUsuario" minLength="3" maxLength="40" type="text" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         <div>
           <label htmlFor="whatsapp" className="block mb-1">
             WhatsApp (Opcional)
           </label>
-          <input id="whatsapp" type="text" value={whatsapp} onChange={handleWhatsAppChange} className="w-full border p-2 rounded-lg" />{" "}
+          <input id="whatsapp" type="text" value={whatsapp} onChange={handleWhatsAppChange} className="w-full border p-2 text-gray-900 rounded-lg" />{" "}
         </div>
         <div>
           <label htmlFor="email" className="block mb-1">
@@ -120,7 +120,7 @@ const SigninPage = () => {
               setEmail(e.target.value.toLowerCase());
               setUsername(e.target.value.toLowerCase());
             }}
-            className="w-full border p-2 rounded-lg"
+            className="w-full border p-2 text-gray-900 rounded-lg"
             required
           />
         </div>
@@ -128,13 +128,13 @@ const SigninPage = () => {
           <label htmlFor="password" className="block mb-1">
             Password
           </label>
-          <input id="password" type="password" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 rounded-lg" required />
+          <input id="password" type="password" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         <div>
-          <p className="block mb-2 text-xs text-gray-700">
+          <p className="block mb-2 text-xs text-gray-700 dark:text-gray-300">
             <span className="font-bold">Importante:</span> Seu nome, endereço de email e número de whatsapp cadastrados serão compartilhados com outros usuários, por exemplo, com aqueles que receberem suas ofertas ou fizerem ofertas em seus anúncios.
           </p>
-          <p className="block mb-1 text-xs text-gray-700">No momento, essa é a única forma de contato entre os usuários.</p>
+          <p className="block mb-1 text-xs text-gray-700 dark:text-gray-300">No momento, essa é a única forma de contato entre os usuários.</p>
         </div>
         <button type="submit" disabled={isLoading} className="w-full bg-gray-800 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed">
           {isLoading ? (
@@ -145,7 +145,7 @@ const SigninPage = () => {
             "Criar Conta"
           )}
         </button>
-        <Link type="button" href="/login" className="w-full flex justify-center align-middle bg-gray-200 border-2 border-gray-800 rounded-md py-2 px-2 font-medium text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed mt-2">
+        <Link type="button" href="/login" className="w-full flex justify-center align-middle bg-gray-200 border-2 border-gray-800 rounded-md py-2 px-2 font-medium text-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed mt-2">
           Já tenho uma conta
         </Link>
       </form>

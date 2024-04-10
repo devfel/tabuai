@@ -97,8 +97,8 @@ function OwnerCard({ game }) {
 
       {/* Game Value & Status on the same line */}
       <div className="flex mt-2 justify-between gap-4 items-center ">
-        <p className="text-lg">
-          Preço: <span className="font-semibold">{` R$ ${game.price}`}</span>
+        <p className="text-lg dark:text-gray-700">
+          Preço: <span className="font-semibold dark:text-gray-700">{` R$ ${game.price}`}</span>
         </p>
       </div>
 
@@ -130,8 +130,8 @@ function OwnerCard({ game }) {
                       <p className="text-gray-600 underline">{offer.Email || "n/a"}</p>
                       {offer.Whatsapp ? <p className="text-gray-600">{offer.Whatsapp}</p> : <></>}
                     </td>
-                    <td className="px-3 py-1 text-center">{offer.DataCriacao}</td>
-                    <td className="px-3 py-1 text-right">{`R$ ${offer.ValorOferta.toFixed(2)}`}</td>
+                    <td className="px-3 py-1 text-center dark:text-gray-700">{offer.DataCriacao}</td>
+                    <td className="px-3 py-1 text-right dark:text-gray-700">{`R$ ${offer.ValorOferta.toFixed(2)}`}</td>
                   </tr>
                 ))}
               </tbody>

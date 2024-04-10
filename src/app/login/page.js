@@ -10,9 +10,11 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const { login } = useAuth();
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoggingIn(true);
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/auth/local`, {
@@ -36,6 +38,8 @@ const LoginPage = () => {
     } catch (error) {
       console.error("Error logging in:", error);
       alert("Login failed. Please try again.");
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -58,8 +62,14 @@ const LoginPage = () => {
             Esqueci a senha.
           </Link>
         </div>
-        <button type="submit" className="w-full bg-gray-800 border border-transparent rounded-md py-2 px-2 font-medium text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed">
-          Entrar
+        <button type="submit" className={`w-full bg-gray-800 border border-transparent rounded-md py-2 px-2 font-medium text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 ${isLoggingIn ? "disabled:bg-gray-400 disabled:cursor-not-allowed" : ""}`} disabled={isLoggingIn}>
+          {isLoggingIn ? (
+            <>
+              <LoadingIndicator /> Entrando...
+            </>
+          ) : (
+            "Entrar"
+          )}
         </button>
         <Link type="button" href="/signin" className="w-full flex justify-center align-middle bg-gray-200 border-2 border-gray-800 rounded-md py-2 px-2 font-medium text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed mt-2">
           Não Tenho Conta

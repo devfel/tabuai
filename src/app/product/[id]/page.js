@@ -21,7 +21,7 @@ const ProductPage = ({ params }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isCreatingOffer, setIsCreatingOffer] = useState(false);
 
   const [createOffer, setCreateOffer] = useState(null);
@@ -165,7 +165,7 @@ const ProductPage = ({ params }) => {
   }
 
   // After loading, check if the game data is available
-  if (!game) {
+  if (!game && !isLoading) {
     return (
       <div className="text-center py-10">
         <p>Jogo não encontrado!</p>

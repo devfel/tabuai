@@ -334,7 +334,13 @@ const ProductPage = ({ params }) => {
                 onClick={handleOfferSubmit}
                 disabled={isLoggedIn && (isOfferButtonDisabled || offerValue <= 0 || !game.statusActive)} // disable the button if offerValue is 0 or negative
               >
-                {isCreatingOffer ? <LoadingIndicator /> + " Salvando Oferta..." : "Fazer Oferta"}
+                {isCreatingOffer ? (
+                  <>
+                    <LoadingIndicator /> <span>Salvando Oferta...</span>
+                  </>
+                ) : (
+                  "Fazer Oferta"
+                )}{" "}
               </button>
             </div>
           </div>

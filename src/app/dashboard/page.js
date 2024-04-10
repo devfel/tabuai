@@ -158,8 +158,9 @@ export default function Dashboard() {
           <h5 className="text-lg font-bold text-white">Minhas Informações:</h5>
         </div>
         {isUserDetailsLoading ? (
-          <div className="text-center p-4 my-2 bg-gray-100 border border-gray-200 rounded-lg">
-            <LoadingIndicator /> <span>Carregando Informações...</span>
+          <div className="flex flex-col justify-center items-center p-4 my-2 bg-gray-100 border border-gray-200 rounded-lg">
+            <LoadingIndicator />
+            <span className="mt-2">Carregando Minhas Informações...</span>
           </div>
         ) : (
           <div className="p-4 my-2 bg-gray-100 border border-gray-200 rounded-lg">
@@ -183,8 +184,9 @@ export default function Dashboard() {
               </Link>
             </div>
             {isBoardGamesLoading ? (
-              <div className="text-center">
-                <LoadingIndicator /> <span>Carregando Meus Jogos...</span>
+              <div className="flex flex-col justify-center items-center p-4 bg-gray-100 border border-gray-200 rounded-lg">
+                <LoadingIndicator />
+                <span className="mt-2">Carregando Meus Jogos...</span>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4 py-4">
@@ -201,8 +203,9 @@ export default function Dashboard() {
               <h5 className="text-lg font-bold text-white">Minhas Ofertas</h5>
             </div>
             {isBoardGamesWithOffersLoading ? (
-              <div className="text-center">
-                <LoadingIndicator /> <span>Carregando Minhas Ofertas...</span>
+              <div className="flex flex-col justify-center items-center p-4 bg-gray-100 border border-gray-200 rounded-lg">
+                <LoadingIndicator />
+                <span className="mt-2">Carregando Minhas Ofertas...</span>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4 py-4">

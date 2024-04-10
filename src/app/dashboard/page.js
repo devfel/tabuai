@@ -5,6 +5,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import OwnerCard from "../components/OwnerCard";
 import OwnerOfertaCard from "../components/OwnerOfertaCard";
+import LoadingIndicator from "../components/LoadingIndicator";
+
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
@@ -14,6 +16,10 @@ export default function Dashboard() {
   const router = useRouter();
   const [userDataState, setUserDataState] = useState(null);
   const [refreshOffers, setRefreshOffers] = useState(false);
+
+  const [isUserDetailsLoading, setIsUserDetailsLoading] = useState(true);
+  const [isBoardGamesLoading, setIsBoardGamesLoading] = useState(true);
+  const [isBoardGamesWithOffersLoading, setIsBoardGamesWithOffersLoading] = useState(true);
 
   // Fetch and set user data
   useEffect(() => {
@@ -30,6 +36,7 @@ export default function Dashboard() {
       }
 
       try {
+        setIsUserDetailsLoading(true);
         const userDetailsResponse = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/users/me`, {
           headers: { Authorization: `Bearer ${userToken}` },
         });
@@ -41,6 +48,8 @@ export default function Dashboard() {
         setUserDataState(userData);
       } catch (error) {
         console.error("Failed to fetch user details:", error);
+      } finally {
+        setIsUserDetailsLoading(false);
       }
     };
 
@@ -54,6 +63,7 @@ export default function Dashboard() {
       const userToken = localStorage.getItem("token");
 
       try {
+        setIsBoardGamesLoading(true);
         const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/board-games?filters[OwnerID][$eq]=${userDataState.id}&populate=*&pagination[pageSize]=9999`, {
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${userToken}` },
         });
@@ -78,6 +88,8 @@ export default function Dashboard() {
         setBoardGames(games.sort((a, b) => b.id - a.id));
       } catch (error) {
         console.error("Failed to load board games:", error);
+      } finally {
+        setIsBoardGamesLoading(false);
       }
     };
 
@@ -91,6 +103,7 @@ export default function Dashboard() {
       const userToken = localStorage.getItem("token");
 
       try {
+        setIsBoardGamesWithOffersLoading(true);
         const offersRes = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/board-games/?populate[Ofertas]=*&populate[owner]=*&pagination[page]=1&pagination[pageSize]=9999`, {
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${userToken}` },
         });
@@ -119,6 +132,8 @@ export default function Dashboard() {
         setBoardGamesWithOffers(gamesWithMyOffers);
       } catch (error) {
         console.error("Failed to load board games with offers:", error);
+      } finally {
+        setIsBoardGamesWithOffersLoading(false);
       }
     };
 
@@ -142,14 +157,20 @@ export default function Dashboard() {
         <div className="flex items-center justify-between px-4 py-2 mt-2 bg-gray-800 border border-gray-800 rounded-lg min-h-16">
           <h5 className="text-lg font-bold text-white">Minhas Informações:</h5>
         </div>
-        <div className="p-4 my-2 bg-gray-100 border border-gray-200 rounded-lg">
-          <p>Usuário: {userDataState ? userDataState.nomeUsuario : "Loading..."}</p>
-          <p>Email: {userDataState ? userDataState.email : ""}</p>
-          <p>WhatsApp: {userDataState ? userDataState.whatsapp : ""}</p>
-          <p className=" text-red-400 border-red-400 cursor-pointer rounded-lg hover:text-red-500 hover:border-red-500 " onClick={handleLogout}>
-            Deslogar
-          </p>
-        </div>
+        {isUserDetailsLoading ? (
+          <div className="text-center p-4 my-2 bg-gray-100 border border-gray-200 rounded-lg">
+            <LoadingIndicator /> <span>Carregando Informações...</span>
+          </div>
+        ) : (
+          <div className="p-4 my-2 bg-gray-100 border border-gray-200 rounded-lg">
+            <p>Usuário: {userDataState ? userDataState.nomeUsuario : "Loading..."}</p>
+            <p>Email: {userDataState ? userDataState.email : ""}</p>
+            <p>WhatsApp: {userDataState ? userDataState.whatsapp : ""}</p>
+            <p className=" text-red-400 border-red-400 cursor-pointer rounded-lg hover:text-red-500 hover:border-red-500 " onClick={handleLogout}>
+              Deslogar
+            </p>
+          </div>
+        )}
 
         {/* Layout de Grid para Meus Jogos e Minhas Ofertas */}
         <div className="lg:grid lg:grid-cols-2 lg:gap-8 mt-4">
@@ -161,11 +182,17 @@ export default function Dashboard() {
                 <button className="py-2 text-white px-2 border-2 text-center font-bold rounded-lg hover:text-gray-300 hover:border-gray-300 ">Anunciar Novo Jogo</button>
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-4 py-4">
-              {boardGames.map((game) => (
-                <OwnerCard key={game.id} game={game} />
-              ))}
-            </div>
+            {isBoardGamesLoading ? (
+              <div className="text-center">
+                <LoadingIndicator /> <span>Carregando Meus Jogos...</span>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-4 py-4">
+                {boardGames.map((game) => (
+                  <OwnerCard key={game.id} game={game} />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Minhas Ofertas */}
@@ -173,11 +200,17 @@ export default function Dashboard() {
             <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border border-gray-800 rounded-lg min-h-16">
               <h5 className="text-lg font-bold text-white">Minhas Ofertas</h5>
             </div>
-            <div className="grid grid-cols-1 gap-4 py-4">
-              {boardGamesWithOffers.map((game) => (
-                <OwnerOfertaCard key={game.id} game={game} onOfferDeleted={handleOfferDeleted} />
-              ))}
-            </div>
+            {isBoardGamesWithOffersLoading ? (
+              <div className="text-center">
+                <LoadingIndicator /> <span>Carregando Minhas Ofertas...</span>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-4 py-4">
+                {boardGamesWithOffers.map((game) => (
+                  <OwnerOfertaCard key={game.id} game={game} onOfferDeleted={handleOfferDeleted} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </main>

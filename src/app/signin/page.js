@@ -88,7 +88,6 @@ const SigninPage = () => {
   const handleWhatsAppChange = (e) => {
     const formattedNumber = formatWhatsAppNumber(e.target.value);
     setWhatsapp(formattedNumber);
-    console.log("Formatted WhatsApp number:", formattedNumber);
   };
 
   return (

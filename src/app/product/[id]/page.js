@@ -227,7 +227,7 @@ const ProductPage = ({ params }) => {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center p-4" onClick={onClose}>
         <div className="bg-gray-200 w-[95vw] h-[95vh] flex justify-center items-center rounded-lg py-4 box-border" onClick={handleModalContentClick}>
-          <button onClick={onClose} className="absolute top-2 right-2 text-lg font-bold cursor-pointer hover:bg-gray-950 hover:text-gray-200 hover:border-gray-200 w-10 h-10 bg-gray-800 border-2 border-white rounded-full text-white">
+          <button onClick={onClose} className="absolute top-2 right-2 text-lg font-bold cursor-pointer hover:bg-gray-950 hover:text-gray-200 hover:border-gray-200 w-10 h-10 bg-gray-800 border-2 border-white rounded-full text-white z-20">
             X
           </button>
           {/* Modal Carousel Slider */}

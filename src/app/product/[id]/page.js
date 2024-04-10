@@ -155,14 +155,22 @@ const ProductPage = ({ params }) => {
     setCreateOffer({ valorOferta, boardGameId });
   };
 
-  // AFTER LOADING GAME DATA
+  // Check if the data is still loading
   if (isLoading) {
-    <div className="flex justify-center items-center h-64">
-      <LoadingIndicator /> Carregando Jogo...
-    </div>;
+    return (
+      <div className="flex justify-center items-center h-64">
+        <LoadingIndicator /> <span>Carregando Jogo...</span>
+      </div>
+    );
   }
+
+  // After loading, check if the game data is available
   if (!game) {
-    return <p>Jogo não encontrado!</p>;
+    return (
+      <div className="text-center py-10">
+        <p>Jogo não encontrado!</p>
+      </div>
+    );
   }
 
   // Function to increase or decrease offers by 10 and 50
@@ -326,7 +334,7 @@ const ProductPage = ({ params }) => {
                 onClick={handleOfferSubmit}
                 disabled={isLoggedIn && (isOfferButtonDisabled || offerValue <= 0 || !game.statusActive)} // disable the button if offerValue is 0 or negative
               >
-                {isLoading ? <LoadingIndicator /> + " Salvando Oferta..." : "Fazer Oferta"}
+                {isCreatingOffer ? <LoadingIndicator /> + " Salvando Oferta..." : "Fazer Oferta"}
               </button>
             </div>
           </div>

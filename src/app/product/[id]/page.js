@@ -10,6 +10,7 @@ import LanguageFlag from "../../components/ReactWorldFlags";
 import ToastOferta from "../../components/ToastOferta";
 import ToastLogin from "../../components/ToastLogin";
 import { useAuth } from "../../../context/AuthContext";
+import LoadingIndicator from "../../components/LoadingIndicator";
 
 const ProductPage = ({ params }) => {
   const [game, setGame] = useState(null);

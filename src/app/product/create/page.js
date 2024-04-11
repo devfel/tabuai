@@ -300,7 +300,7 @@ const CreateBoardGamePage = () => {
           <p className="">
             Imagens que estão sendo enviadas: <span className="font-semibold">{images.length}</span>
           </p>
-          <p className=" text-sm">Até 9 imagens de 3MB cada.</p>
+          <p className=" text-sm">Até 9 imagens de 1MB cada.</p>
         </div>
         <div className="grid grid-cols-3 gap-4">
           {images.map((image, index) => (
@@ -320,7 +320,7 @@ const CreateBoardGamePage = () => {
             </div>
           ))}
         </div>
-        <div className="block font-medium">{images.length > 9 && <p className="text-red-600 font-semibold">Você pode enviar no máximo 9 imagens de 3MB cada.</p>}</div>
+        <div className="block font-medium">{images.length > 9 && <p className="text-red-600 font-semibold">Você pode enviar no máximo 9 imagens de 1MB cada.</p>}</div>
         <button
           type="submit"
           disabled={images.length === 0 || images.length > 9 || isSubmitting}

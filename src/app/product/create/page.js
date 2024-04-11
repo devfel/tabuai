@@ -334,7 +334,7 @@ const CreateBoardGamePage = () => {
           ) : (
             "Cadastrar Anúncio"
           )}
-        </button>{" "}
+        </button>
       </form>
       {showToast && <ToastBG message="O BoardGame foi adicionado com sucesso a sua lista de jogos! Clique aqui para ver a postagem." onDismiss={() => setShowToast(false)} gameId={createdGameId} />}
       {showToastError && <ToastBGError message="Erro ao Cadastrar Anúncio! Confira os limites das imagens e tente novamente." onDismiss={() => setShowToastError(false)} />}

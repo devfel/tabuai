@@ -135,8 +135,8 @@ export default function Home() {
             <select className="px-4 py-2 rounded-lg w-56" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="mostRecent">Mais Recente Primeiro</option>
               <option value="oldFirst">Mais Antigo Primeiro</option>
-              <option value="priceAsc">Preço (Maior Primeiro)</option>
-              <option value="priceDesc">Preço (Menor Primeiro)</option>
+              <option value="priceDesc">Preço (Maior Primeiro)</option>
+              <option value="priceAsc">Preço (Menor Primeiro)</option>
               <option value="nameAsc">Nome (A-Z)</option>
               <option value="nameDesc">Nome (Z-A)</option>
             </select>

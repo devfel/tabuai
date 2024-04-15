@@ -63,7 +63,49 @@ export default function Home() {
     fetchGames();
   }, []);
 
+  // useEffect(() => {
+  //   function sortGames(games) {
+  //     return [...games].sort((a, b) => {
+  //       switch (sortOption) {
+  //         case "priceAsc":
+  //           return a.price - b.price;
+  //         case "priceDesc":
+  //           return b.price - a.price;
+  //         case "nameAsc":
+  //           return a.name.localeCompare(b.name);
+  //         case "nameDesc":
+  //           return b.name.localeCompare(a.name);
+
+  //         // IDs are assigned in order of addition (most recent first)
+  //         case "oldFirst":
+  //           return a.id - b.id;
+  //         default:
+  //           return b.id - a.id;
+  //       }
+  //     });
+  //   }
+
+  //   const sortedGames = sortGames(filteredGames);
+  //   setFilteredGames(sortedGames);
+  // }, [sortOption]);
+
+  function goToNextPage() {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  }
+
+  function goToPreviousPage() {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  }
+
+  function goToPage(page) {
+    setCurrentPage(page);
+  }
+
   useEffect(() => {
+    // Game filtering
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    const filtered = boardGames.filter((game) => game.name.toLowerCase().includes(lowerCaseQuery));
+
     function sortGames(games) {
       return [...games].sort((a, b) => {
         switch (sortOption) {
@@ -85,39 +127,18 @@ export default function Home() {
       });
     }
 
-    const sortedGames = sortGames(filteredGames);
-    setFilteredGames(sortedGames);
-  }, [sortOption]);
+    const sortedGames = sortGames(filtered);
 
-  function goToNextPage() {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
-  }
-
-  function goToPreviousPage() {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  }
-
-  function goToPage(page) {
-    setCurrentPage(page);
-  }
-
-  useEffect(() => {
-    // Game filtering
-    const lowerCaseQuery = searchQuery.toLowerCase();
-    const filtered = boardGames.filter((game) => game.name.toLowerCase().includes(lowerCaseQuery));
-
-    // Updadate the state of the filtered games and recalculate the total pages
-    const totalFiltered = filtered.length;
-    setFilteredGames(filtered); //Update the state of filtered games before paginating them
+    const totalFiltered = sortedGames.length;
     setTotalPages(Math.ceil(totalFiltered / ITEMS_PER_PAGE));
 
     // Apply pagination to the filtered games
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
-    const paginatedGames = filtered.slice(startIndex, endIndex);
+    const paginatedGames = sortedGames.slice(startIndex, endIndex);
 
     setFilteredGames(paginatedGames); // update again with the new paginated version
-  }, [searchQuery, currentPage, boardGames]); //include all three states dependencies
+  }, [searchQuery, currentPage, boardGames, sortOption]); //include all three states dependencies
 
   useEffect(() => {
     // Reset currentPage to 1 whenever searchQuery changes
@@ -249,3 +270,4 @@ export default function Home() {
 // Nos jogos, melhorar Carrossel.
 
 //Alterar Idioma na pagina principal para Fotinhas de Bandeiras.
+// ARRUMAR ORDENAÇÃO DOS JOGOS NO DASHBOARD (Só está contando a ordenação dos jogos na pagina, é precisa contar todo ARRAY "e voltar para a pagina 1 talvez?".)

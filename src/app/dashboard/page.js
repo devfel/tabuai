@@ -82,7 +82,7 @@ export default function Dashboard() {
           idioma: item.attributes.Idioma,
           maiorOferta: item.attributes.MaiorOferta,
           offers: item.attributes.Ofertas.data,
-          image: item.attributes.Images.data?.[0]?.attributes.url ? `${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL_IMAGES}${item.attributes.Images.data[0].attributes.url}` : "/placeholder.jpg",
+          image: item.attributes.Images.data?.[0]?.attributes.url ? `${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL_IMAGES}${item.attributes.Images.data[0].attributes.url}` : "/placeholder02c.png",
         }));
 
         setBoardGames(games.sort((a, b) => b.id - a.id));

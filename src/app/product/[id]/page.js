@@ -67,8 +67,8 @@ const ProductPage = ({ params }) => {
         if (!coverImage) {
           gameImages.push({
             id: "placeholder",
-            url: "/placeholder01.jpg",
-            smallUrl: "/placeholder01.jpg",
+            url: "/placeholder02c.png",
+            smallUrl: "/placeholder02c.png",
           });
         }
 

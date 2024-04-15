@@ -30,7 +30,7 @@ export default function Home() {
         const games = json.data
           .map((item) => {
             const imageData = item.attributes.CoverImage.data;
-            let image = "/placeholder01.jpg";
+            let image = "/placeholder02c.png";
             if (imageData) {
               image = `${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL_IMAGES}${imageData.attributes.url}`;
             }

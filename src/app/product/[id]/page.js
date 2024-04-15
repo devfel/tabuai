@@ -64,6 +64,14 @@ const ProductPage = ({ params }) => {
           gameImages = [coverImage, ...gameImages];
         }
 
+        if (!coverImage) {
+          gameImages.push({
+            id: "placeholder",
+            url: "/placeholder01.jpg",
+            smallUrl: "/placeholder01.jpg",
+          });
+        }
+
         // Set the game state with the processed images
         setGame({
           id: json.data.id,

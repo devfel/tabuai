@@ -12,8 +12,9 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredGames, setFilteredGames] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const ITEMS_PER_PAGE = 9;
+  const ITEMS_PER_PAGE = 24;
   const MAX_ITEMS_TOTAL = 900;
+  const [sortOption, setSortOption] = useState("mostRecent");
 
   useEffect(() => {
     async function fetchGames() {
@@ -29,7 +30,7 @@ export default function Home() {
         const games = json.data
           .map((item) => {
             const imageData = item.attributes.CoverImage.data;
-            let image = "/placeholder.jpg";
+            let image = "/placeholder01.jpg";
             if (imageData) {
               image = `${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL_IMAGES}${imageData.attributes.url}`;
             }
@@ -61,6 +62,32 @@ export default function Home() {
 
     fetchGames();
   }, []);
+
+  useEffect(() => {
+    function sortGames(games) {
+      return [...games].sort((a, b) => {
+        switch (sortOption) {
+          case "priceAsc":
+            return a.price - b.price;
+          case "priceDesc":
+            return b.price - a.price;
+          case "nameAsc":
+            return a.name.localeCompare(b.name);
+          case "nameDesc":
+            return b.name.localeCompare(a.name);
+
+          // IDs are assigned in order of addition (most recent first)
+          case "oldFirst":
+            return a.id - b.id;
+          default:
+            return b.id - a.id;
+        }
+      });
+    }
+
+    const sortedGames = sortGames(filteredGames);
+    setFilteredGames(sortedGames);
+  }, [sortOption]);
 
   function goToNextPage() {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
@@ -98,20 +125,34 @@ export default function Home() {
   }, [searchQuery]);
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div className="max-w-2xl mx-auto px-2 sm:px-6 sm:max-w-full md:max-w-full lg:max-w-7xl lg:px-8">
       <main>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 md:justify-items-stretch lg:justify-items-stretch justify-items-center items-center">
-          <input className="text-black px-4 py-2 w-full md:w-auto max-w-80 rounded-lg " placeholder="Buscar jogo..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />{" "}
+          <input className="text-black px-4 py-2 w-full md:w-auto max-w-80 rounded-lg " placeholder="Buscar jogo..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+
+          <div>
+            <label>Ordenar: </label>
+            <select className="px-4 py-2 rounded-lg w-56" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+              <option value="mostRecent">Mais Recente Primeiro</option>
+              <option value="oldFirst">Mais Antigo Primeiro</option>
+              <option value="priceAsc">Preço (Maior Primeiro)</option>
+              <option value="priceDesc">Preço (Menor Primeiro)</option>
+              <option value="nameAsc">Nome (A-Z)</option>
+              <option value="nameDesc">Nome (Z-A)</option>
+            </select>
+          </div>
+
           <Link href="/about" className="w-auto text-gray-800 px-2 hover:underline hover:text-gray-950 text-sm dark:text-gray-300">
             Não conhece esse trem? Uai, clica aqui sô!
           </Link>
         </div>
+
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <LoadingIndicator /> Carregando Jogos...
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 md:justify-items-stretch lg:justify-items-stretch justify-items-center">
+          <div className="w-full min-w-64 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4 sm:justify-items-stretch md:justify-items-stretch lg:justify-items-stretch justify-items-stretch">
             {filteredGames.map((game) => (
               <Card key={game.id} game={game} />
             ))}
@@ -197,3 +238,14 @@ export default function Home() {
 
 // -- IMPORTANTE --
 // Filtrar Jogos que foram desativados de aparecerem na página principal.
+
+// -- MAIS RECENTE:
+// Cadastrar Produto Sem Imagem.
+
+// Melhorar Cards (Aparecer 16 por página e diminuir no celular)
+// Lista de Jogos (Ao inves de Cards) (Salvar opção no localstorage)
+// Sorting de Jogo (Mais Recente, Alfabeto, Preço)
+
+// Nos jogos, melhorar Carrossel.
+
+//Alterar Idioma na pagina principal para Fotinhas de Bandeiras.

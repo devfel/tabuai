@@ -92,12 +92,12 @@ function OwnerCard({ game }) {
     <div className={`flex flex-col p-4 border-4 border-white rounded-lg shadow-md ${game.statusActive ? "bg-gray-50" : "bg-gray-200"}`}>
       {/* Game Name */}
       <Link href={`/product/${game.id}`} passHref>
-        <h5 className="text-2xl font-bold text-black hover:text-gray-700 hover:underline transition-colors duration-200 ease-in-out">{game.name}</h5>
+        <h5 className="text-lg font-bold text-black hover:text-gray-700 hover:underline transition-colors duration-200 ease-in-out">{game.name}</h5>
       </Link>
 
       {/* Game Value & Status on the same line */}
       <div className="flex mt-2 justify-between gap-4 items-center ">
-        <p className="text-lg dark:text-gray-700">
+        <p className="text-base dark:text-gray-700">
           Preço: <span className="font-semibold dark:text-gray-700">{` R$ ${game.price}`}</span>
         </p>
       </div>

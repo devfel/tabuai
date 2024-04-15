@@ -69,10 +69,10 @@ const CreateBoardGamePage = () => {
 
     setIsSubmitting(true);
 
-    if (images.length === 0) {
-      alert("No images were found, please upload at least one image.");
-      return; // Stop the form submission
-    }
+    // if (images.length === 0) {
+    //   alert("No images were found, please upload at least one image.");
+    //   return; // Stop the form submission
+    // }
 
     const token = localStorage.getItem("token");
 
@@ -87,19 +87,21 @@ const CreateBoardGamePage = () => {
     const formDataToSend = new FormData();
     formDataToSend.append("data", JSON.stringify(dataToSend));
 
-    // Separar a imagem de capa das outras imagens
-    const coverImage = images[coverImageIndex];
-    const otherImages = images.filter((_, index) => index !== coverImageIndex);
+    if (images.length > 0) {
+      // Separar a imagem de capa das outras imagens
+      const coverImage = images[coverImageIndex];
+      const otherImages = images.filter((_, index) => index !== coverImageIndex);
 
-    // Adicionar imagem de capa ao FormData
-    if (coverImage) {
-      formDataToSend.append("files.CoverImage", coverImage.file);
+      // Adicionar imagem de capa ao FormData
+      if (coverImage) {
+        formDataToSend.append("files.CoverImage", coverImage.file);
+      }
+
+      // Adicionar as outras imagens ao FormData
+      otherImages.forEach((image) => {
+        formDataToSend.append("files.Images", image.file);
+      });
     }
-
-    // Adicionar as outras imagens ao FormData
-    otherImages.forEach((image) => {
-      formDataToSend.append("files.Images", image.file);
-    });
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/board-games`, {
@@ -195,6 +197,10 @@ const CreateBoardGamePage = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [isTooltipOpen]);
+
+  const isFormRequiredFieldsNotEmpty = () => {
+    return formData.Title.trim() !== "" && formData.Value.trim() !== "" && formData.Idioma.trim() !== "" && formData.Condition.trim() !== "";
+  };
 
   return (
     <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
@@ -292,7 +298,7 @@ const CreateBoardGamePage = () => {
           <label htmlFor="Description" className="block text-sm font-medium text-gray-700">
             Detalhes da Condição
           </label>
-          <textarea name="Description" id="Description" type="text" minLength="4" maxLength="4000" required value={formData.Description} onChange={handleChange} rows="4" className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <textarea name="Description" id="Description" type="text" maxLength="4000" value={formData.Description} onChange={handleChange} rows="4" className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Images</label>
@@ -323,8 +329,8 @@ const CreateBoardGamePage = () => {
         <div className="block font-medium">{images.length > 9 && <p className="text-red-600 font-semibold">Você pode enviar no máximo 9 imagens de 1MB cada.</p>}</div>
         <button
           type="submit"
-          disabled={images.length === 0 || images.length > 9 || isSubmitting}
-          className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${images.length === 0 || images.length > 9 || isSubmitting ? "cursor-not-allowed bg-gray-300 text-gray-800" : "bg-gray-800 hover:bg-gray-950 text-white"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+          disabled={!isFormRequiredFieldsNotEmpty() || images.length > 9 || isSubmitting}
+          className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${!isFormRequiredFieldsNotEmpty() || images.length > 9 || isSubmitting ? "cursor-not-allowed bg-gray-300 text-gray-800" : "bg-gray-800 hover:bg-gray-950 text-white"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
         >
           {isSubmitting ? (
             <div className="flex justify-center items-center space-x-2">

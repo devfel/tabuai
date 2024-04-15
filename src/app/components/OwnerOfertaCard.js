@@ -59,10 +59,10 @@ function OwnerOfertaCard({ game, onOfferDeleted }) {
   return (
     <div className={`flex flex-col p-4 border-4 border-gray-800 rounded-lg shadow-md ${active ? "bg-gray-50" : "bg-gray-200"}`}>
       <Link href={`/product/${game.id}`} passHref>
-        <h5 className="text-2xl font-bold text-black hover:text-gray-700 hover:underline transition-colors duration-200 ease-in-out">{Title}</h5>
+        <h5 className="text-lg font-bold text-black hover:text-gray-700 hover:underline transition-colors duration-200 ease-in-out">{Title}</h5>
       </Link>
-      <div className="mt-2 text-lg dark:text-gray-700">
-        {!active && <p className="font-bold text-center text-2xl text-red-600"> DESATIVADO / VENDIDO </p>}
+      <div className="mt-2 text-base dark:text-gray-700">
+        {!active && <p className="font-bold text-center text-lg text-red-600"> DESATIVADO / VENDIDO </p>}
         <p>
           Dono: <span className="font-semibold dark:text-gray-700">{ownerUsername}</span>{" "}
         </p>
@@ -76,7 +76,7 @@ function OwnerOfertaCard({ game, onOfferDeleted }) {
           Preço: <span className="font-semibold dark:text-gray-700">R$ {Value.toFixed(2)}</span>{" "}
         </p>
 
-        <p className="text-right text-sm dark:text-gray-700">
+        <p className="text-right text-sm mt-2 dark:text-gray-700">
           Maior Oferta no Produto: <span className="font-semibold dark:text-gray-700">R$ {MaiorOferta?.toFixed(2)}</span>{" "}
         </p>
       </div>

@@ -153,7 +153,7 @@ export default function Home() {
 
           <div>
             <label>Ordenar: </label>
-            <select className="px-4 py-2 rounded-lg w-56" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+            <select className="px-4 py-2 rounded-lg w-56 dark:text-gray-700" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
               <option value="mostRecent">Mais Recente Primeiro</option>
               <option value="oldFirst">Mais Antigo Primeiro</option>
               <option value="priceDesc">Preço (Maior Primeiro)</option>

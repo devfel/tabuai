@@ -93,18 +93,18 @@ const SigninPage = () => {
   return (
     <div className="max-w-md mx-auto my-10 p-5 border rounded-lg">
       <h2 className="text-2xl font-semibold mb-5">Criar Conta</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" autocomplete="off">
         <div>
           <label htmlFor="nomeUsuario" className="block mb-1">
             Nome Completo
           </label>
-          <input id="nomeUsuario" minLength="3" maxLength="40" type="text" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
+          <input id="nomeUsuario" minLength="3" maxLength="40" type="text" autocomplete="off" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         <div>
           <label htmlFor="whatsapp" className="block mb-1">
             WhatsApp (Opcional)
           </label>
-          <input id="whatsapp" type="text" value={whatsapp} onChange={handleWhatsAppChange} className="w-full border p-2 text-gray-900 rounded-lg" />{" "}
+          <input id="whatsapp" type="text" autocomplete="off" value={whatsapp} onChange={handleWhatsAppChange} className="w-full border p-2 text-gray-900 rounded-lg" />{" "}
         </div>
         <div>
           <label htmlFor="email" className="block mb-1">
@@ -115,6 +115,7 @@ const SigninPage = () => {
             maxLength="50"
             id="email"
             type="email"
+            autocomplete="off"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value.toLowerCase());
@@ -128,7 +129,7 @@ const SigninPage = () => {
           <label htmlFor="password" className="block mb-1">
             Password
           </label>
-          <input id="password" type="password" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
+          <input id="password" type="password" autocomplete="off" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         <div>
           <p className="block mb-2 text-xs text-gray-700 dark:text-gray-300">

@@ -206,22 +206,22 @@ const CreateBoardGamePage = () => {
     <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="Title" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="Title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Título
           </label>
-          <input type="text" minLength="3" maxLength="100" name="Title" id="Title" required value={formData.Title} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" minLength="3" maxLength="100" name="Title" id="Title" required value={formData.Title} onChange={handleChange} className="mt-1 block w-full p-2 border dark:text-gray-700 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div>
-          <label htmlFor="Value" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="Value" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Valor (R$)
           </label>
-          <input type="number" name="Value" id="Value" required min="5" max="20000" step="0.01" value={formData.Value} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="number" name="Value" id="Value" required min="5" max="20000" step="0.01" value={formData.Value} onChange={handleChange} className="mt-1 block w-full p-2 border dark:text-gray-700 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div>
-          <label htmlFor="Idioma" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="Idioma" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Idioma
           </label>
-          <select name="Idioma" id="Idioma" required value={formData.Idioma} onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+          <select name="Idioma" id="Idioma" required value={formData.Idioma} onChange={handleChange} className="mt-1 block w-full p-2 border dark:text-gray-700 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
             <option value="">Selecione o Idioma</option>
             <option value="Português BR">Português (Brasil)</option>
             <option value="Português PT">Português (Portugal)</option>
@@ -233,13 +233,13 @@ const CreateBoardGamePage = () => {
           </select>
         </div>
         <div className="relative" ref={tooltipRef}>
-          <label htmlFor="Condition" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="Condition" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Condição
             <button type="button" onClick={() => setIsTooltipOpen(!isTooltipOpen)} className="  hover:bg-gray-950 ml-2 w-6 h-6 bg-gray-700 rounded-full text-white">
               ?
             </button>
           </label>
-          <select name="Condition" id="Condition" required onChange={handleChange} className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+          <select name="Condition" id="Condition" required onChange={handleChange} className="mt-1 block w-full p-2 border dark:text-gray-700 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
             <option value="">Selecione uma condição</option>
             <option value="Quinem da loja">Quinem na loja (M)</option>
             <option value="Só abri pá vê">Só abri pá vê (NM)</option>
@@ -295,10 +295,10 @@ const CreateBoardGamePage = () => {
           )}
         </div>
         <div>
-          <label htmlFor="Description" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="Description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Detalhes da Condição
           </label>
-          <textarea name="Description" id="Description" type="text" maxLength="4000" value={formData.Description} onChange={handleChange} rows="4" className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <textarea name="Description" id="Description" type="text" maxLength="4000" value={formData.Description} onChange={handleChange} rows="4" className="mt-1 block w-full p-2 border dark:text-gray-700 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Images</label>

@@ -14,18 +14,18 @@ const Header = () => {
         <Link href="/">
           <div className="flex items-center rounded-lg hover:text-gray-200 hover:bg-gray-950 px-4 py-1">
             <Image src="/tabuai-logo.svg" alt="TabUai Logo" width={50} height={50} />
-            <h1 className="ml-4 text-3xl font-bold text-center md:text-left  inline-block family" style={{ fontFamily: "Comic Sans MS" }}>
+            <h1 className="ml-4 text-3xl font-bold text-center md:text-left  inline-block family" style={{ fontFamily: '"Comic Sans MS", "Chalkboard", "ChalkboardSE-Regular", sans-serif' }}>
               TABUai
             </h1>
           </div>
         </Link>
         {/* APOIO COVIL CON 2024 */}
-        {/* <Link href="https://covilcon.com.br/">
+        <Link href="https://covilcon.com.br/">
           <div className="flex items-center rounded-lg hover:text-gray-200 hover:bg-gray-950 px-4 py-1">
-            <h4 className="ml-4  font-bold text-center md:text-left  inline-block mr-2">Apoio: </h4>
-            <Image src="/covil-con-2024.webp" alt="Covil Con 2024 Logo" width={70} height={70} />
+            <h4 className="mx-2 font-bold text-center md:text-left  inline-block ">Apoio: </h4>
+            <Image src="/covil-con-2024.webp" alt="Covil Con 2024 Logo" width={100} height={100} />
           </div>
-        </Link> */}
+        </Link>
 
         <div className="w-full md:w-auto flex flex-col md:flex-row justify-center items-center gap-2">
           {isLoggedIn ? (

@@ -63,32 +63,6 @@ export default function Home() {
     fetchGames();
   }, []);
 
-  // useEffect(() => {
-  //   function sortGames(games) {
-  //     return [...games].sort((a, b) => {
-  //       switch (sortOption) {
-  //         case "priceAsc":
-  //           return a.price - b.price;
-  //         case "priceDesc":
-  //           return b.price - a.price;
-  //         case "nameAsc":
-  //           return a.name.localeCompare(b.name);
-  //         case "nameDesc":
-  //           return b.name.localeCompare(a.name);
-
-  //         // IDs are assigned in order of addition (most recent first)
-  //         case "oldFirst":
-  //           return a.id - b.id;
-  //         default:
-  //           return b.id - a.id;
-  //       }
-  //     });
-  //   }
-
-  //   const sortedGames = sortGames(filteredGames);
-  //   setFilteredGames(sortedGames);
-  // }, [sortOption]);
-
   function goToNextPage() {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   }

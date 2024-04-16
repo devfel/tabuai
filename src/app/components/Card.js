@@ -5,7 +5,7 @@ function Card({ game }) {
   return (
     <Link href={`/product/${game.id}`} passHref>
       <div className="flex flex-row sm:flex-col cursor-pointer bg-white rounded-lg border border-gray-200 shadow-lg hover:shadow-xl hover:shadow-gray-950 dark:bg-gray-800 dark:border-gray-700 w-full">
-        <div className="w-5/12 sm:w-full sm:flex sm:justify-center items-center overflow-hidden rounded-t-lg p-2 bg-gray-300 h-48 sm:h-72">
+        <div className="w-5/12 sm:w-full sm:flex sm:justify-center items-center overflow-hidden rounded-t-lg p-2 bg-gray-300 h-48 sm:h-52">
           <img className="max-w-none h-full w-full object-contain" src={game.image} alt={game.name} />
         </div>
         <div className="p-4 w-7/12 sm:w-full" style={{ height: "190px" }}>

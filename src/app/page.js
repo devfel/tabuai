@@ -123,18 +123,32 @@ export default function Home() {
     <div className="max-w-2xl mx-auto px-2 sm:px-6 sm:max-w-full md:max-w-full lg:max-w-7xl lg:px-8">
       <main>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 md:justify-items-stretch lg:justify-items-stretch justify-items-center items-center">
-          <input className="text-black px-4 py-2 w-full md:w-auto max-w-80 rounded-lg " placeholder="Buscar jogo..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-4">
+              <svg className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </span>
+            <input className="text-black pl-10 pr-4 py-2 w-full md:w-auto max-w-80 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Buscar jogo..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          </div>
 
-          <div>
-            <label>Ordenar: </label>
-            <select className="px-4 py-2 rounded-lg w-56 dark:text-gray-700" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="mostRecent">Mais Recente Primeiro</option>
-              <option value="oldFirst">Mais Antigo Primeiro</option>
-              <option value="priceDesc">Preço (Maior Primeiro)</option>
-              <option value="priceAsc">Preço (Menor Primeiro)</option>
-              <option value="nameAsc">Nome (A-Z)</option>
-              <option value="nameDesc">Nome (Z-A)</option>
-            </select>
+          <div className="flex items-center space-x-2">
+            <label className="text-sm font-medium text-gray-700">Ordenar:</label>
+            <div className="relative">
+              <select className="appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full md:w-56" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                <option value="mostRecent">Mais Recente Primeiro</option>
+                <option value="oldFirst">Mais Antigo Primeiro</option>
+                <option value="priceDesc">Preço (Maior Primeiro)</option>
+                <option value="priceAsc">Preço (Menor Primeiro)</option>
+                <option value="nameAsc">Nome (A-Z)</option>
+                <option value="nameDesc">Nome (Z-A)</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M5.71 7.29a1 1 0 011.42 0L10 10.17l2.86-2.88a1 1 0 111.41 1.41l-4 4a1 1 0 01-1.41 0l-4-4a1 1 0 010-1.42z" />
+                </svg>
+              </div>
+            </div>
           </div>
 
           <Link href="/about" className="w-auto text-gray-800 px-2 hover:underline hover:text-gray-950 text-sm dark:text-gray-300">

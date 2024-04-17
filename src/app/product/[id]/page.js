@@ -15,6 +15,7 @@ import LoadingIndicator from "../../components/LoadingIndicator";
 const ProductPage = ({ params }) => {
   const [game, setGame] = useState(null);
   const [isOfferButtonDisabled, setIsOfferButtonDisabled] = useState(false);
+  const [isInterestButtonDisabled, setIsInterestButtonDisabled] = useState(false);
   const [offerValue, setOfferValue] = useState(0);
   const [submittedOfferValue, setSubmittedOfferValue] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -26,16 +27,39 @@ const ProductPage = ({ params }) => {
 
   const [createOffer, setCreateOffer] = useState(null);
   const [showToastOferta, setShowToastOferta] = useState(false);
+  const [showToastInterest, setShowToastInterest] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { isLoggedIn } = useAuth();
   const [showToastLogin, setShowToastLogin] = useState(false);
 
+  const moneyIconSvg = (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 h-6 w-6">
+      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+      <circle cx="3" cy="6" r="2" fill="currentColor" />
+      <circle cx="21" cy="6" r="2" fill="currentColor" />
+      <circle cx="21" cy="18" r="2" fill="currentColor" />
+      <circle cx="3" cy="18" r="2" fill="currentColor" />
+      <circle cx="12" cy="12" r="3" fill="currentColor" />
+    </svg>
+  );
+
+  const heartIconSvg = (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+    </svg>
+  );
+
   React.useEffect(() => {
     const fetchGame = async () => {
       setIsLoading(true);
+
+      // Attempt to retrieve the token; if not available, proceed without it
+      const token = localStorage.getItem("token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/board-games/${params.id}?populate=*`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/board-games/${params.id}?populate=*`, { headers });
         if (!res.ok) {
           throw new Error("Failed to fetch");
         }
@@ -86,6 +110,17 @@ const ProductPage = ({ params }) => {
         });
 
         setOfferValue(json.data.attributes.Value); // Set the initial offer value to the game price
+
+        // Conditional offer check based on user login status and check if user has 0.00 offer.
+        if (token && json.data.attributes.Ofertas && json.data.attributes.Ofertas.data) {
+          const userId = localStorage.getItem("userId");
+          const hasMadeZeroOffer = json.data.attributes.Ofertas.data.some((offer) => offer.attributes.UsuarioDaOfertaID === parseInt(userId) && offer.attributes.ValorOferta === 0);
+          setIsInterestButtonDisabled(hasMadeZeroOffer);
+        } else {
+          setIsInterestButtonDisabled(false); // Always enable the button if no user is logged in or no offers data
+        }
+
+        // Error Catching
       } catch (error) {
         console.error("Failed to load board game:", error);
       } finally {
@@ -98,17 +133,18 @@ const ProductPage = ({ params }) => {
 
   useEffect(() => {
     const createOferta = async () => {
-      setIsOfferButtonDisabled(true);
-
       if (!createOffer) {
-        // Habilita o botão se createOffer for nulo
-        setIsOfferButtonDisabled(false);
         return;
       }
 
       const { valorOferta, boardGameId } = createOffer;
       setSubmittedOfferValue(valorOferta);
       const token = localStorage.getItem("token");
+
+      // Only disable the offer button if the offer value is greater than zero
+      if (valorOferta > 0) {
+        setIsOfferButtonDisabled(true);
+      }
 
       if (!token) {
         // User Not Logged In
@@ -140,7 +176,11 @@ const ProductPage = ({ params }) => {
         const result = await response.json();
         setIsCreatingOffer(false);
         //router.push("/dashboard"); // Redirect to dashboard after creating the offer
-        setShowToastOferta(true);
+        if (valorOferta === 0) {
+          setShowToastInterest(true); // Show interest toast for 0.00 offers
+        } else {
+          setShowToastOferta(true); // Show offer toast for non-zero offers
+        }
         setRefreshPage(true);
         // Handle success (e.g., show a success message or update state)
       } catch (error) {
@@ -154,13 +194,26 @@ const ProductPage = ({ params }) => {
     createOferta();
   }, [createOffer]); // This effect runs when `createOffer` changes.
 
-  // Example button click handler that triggers the offer creation
+  // Button click handler that triggers the offer creation
   const handleOfferSubmit = () => {
     const valorOferta = offerValue;
     const boardGameId = game.id;
 
     // This will trigger the useEffect above
     setCreateOffer({ valorOferta, boardGameId });
+  };
+
+  // Button click handler that triggers the interest creation
+  const handleInterestSubmit = () => {
+    if (!isLoggedIn) {
+      setShowToastLogin(true);
+      return;
+    }
+    // Set up the offer object with the 0 value offer.
+    setCreateOffer({
+      valorOferta: 0,
+      boardGameId: game.id,
+    });
   };
 
   // Check if the data is still loading
@@ -340,15 +393,36 @@ const ProductPage = ({ params }) => {
               <button
                 className="mt-2 w-full bg-gray-800 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
                 onClick={handleOfferSubmit}
-                disabled={isLoggedIn && (isOfferButtonDisabled || offerValue <= 0 || !game.statusActive)} // disable the button if offerValue is 0 or negative
+                disabled={isLoggedIn && (isOfferButtonDisabled || offerValue <= 0 || !game.statusActive || isCreatingOffer)} // disable the button if offerValue is 0 or negative
               >
                 {isCreatingOffer ? (
                   <>
-                    <LoadingIndicator /> <span>Salvando Oferta...</span>
+                    <LoadingIndicator /> <span>Salvando...</span>
                   </>
                 ) : (
-                  "Fazer Oferta"
+                  <>
+                    {moneyIconSvg}
+                    Fazer Oferta
+                  </>
                 )}{" "}
+              </button>
+
+              <button
+                className="mt-2 w-full bg-red-700 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-700 disabled:bg-red-400 disabled:cursor-not-allowed"
+                onClick={handleInterestSubmit}
+                disabled={isInterestButtonDisabled || !game.statusActive || isCreatingOffer} // Disable the button if the user is not logged in or the game is not active.
+              >
+                {isCreatingOffer ? (
+                  <>
+                    <LoadingIndicator />
+                    <span>Salvando...</span>
+                  </>
+                ) : (
+                  <>
+                    {heartIconSvg}
+                    {isInterestButtonDisabled ? "Já tô de Oio!" : "Tenho Interesse"}
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -366,6 +440,7 @@ const ProductPage = ({ params }) => {
           </Modal>
         )}
       </main>
+      {showToastInterest && <ToastOferta message={`Agora cê pode vê o contato do Dono em "Minha Conta".`} onDismiss={() => setShowToastOferta(false)} />}
       {showToastOferta && <ToastOferta message={`Sua oferta de R$ ${submittedOfferValue.toFixed(2)} foi realizada com Sucesso!`} onDismiss={() => setShowToastOferta(false)} />}
       {showToastLogin && <ToastLogin message={`Você precisa estar logado para fazer uma oferta! É bem rapidinho.`} onDismiss={() => setShowToastLogin(false)} />}
     </div>

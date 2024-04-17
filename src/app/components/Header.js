@@ -29,11 +29,11 @@ const Header = () => {
 
         <div className="w-full md:w-auto flex flex-col md:flex-row justify-center items-center gap-2">
           {isLoggedIn ? (
-            <Link href="/dashboard" className="w-full md:w-auto py-2 text-white px-2 border-2 text-center font-bold max-w-80 rounded-lg hover:text-gray-300 hover:border-gray-300">
+            <Link href="/dashboard" className="w-full md:w-auto py-2 text-white px-2 border-2 text-center font-bold min-w-40 max-w-80 rounded-lg hover:text-gray-300 hover:border-gray-300">
               Minha Conta
             </Link>
           ) : (
-            <Link href="/login" className="w-full md:w-auto py-2 text-white px-2 border-2 text-center font-bold max-w-80 rounded-lg hover:text-gray-300 hover:border-gray-300">
+            <Link href="/login" className="w-full md:w-auto py-2 text-white px-2 border-2 text-center font-bold min-w-40 max-w-80 rounded-lg hover:text-gray-300 hover:border-gray-300">
               Entrar
             </Link>
           )}

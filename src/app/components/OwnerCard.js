@@ -7,6 +7,12 @@ function OwnerCard({ game }) {
   const [offerDetails, setOfferDetails] = useState([]);
   const userToken = localStorage.getItem("token");
 
+  const heartIconSvg = (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="mr-2 h-5 w-5">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+    </svg>
+  );
+
   useEffect(() => {
     const fetchOfferDetails = async () => {
       const details = await Promise.all(
@@ -117,21 +123,21 @@ function OwnerCard({ game }) {
             <table className="min-w-full text-sm divide-y divide-gray-200">
               <thead className="bg-white border border-gray-800 bg-opacity-50">
                 <tr>
-                  <th className="px-3 py-1 text-left font-semibold text-gray-800">Ofertas Recebidas</th>
-                  <th className="px-3 py-1 text-center font-semibold text-gray-800">Data e Hora</th>
-                  <th className="px-3 py-1 text-right font-semibold text-gray-800">Valor Ofertado</th>
+                  <th className="px-2 py-1 text-left font-semibold text-gray-800">Cliques Recebido</th>
+                  <th className="px-2 py-1 text-center font-semibold text-gray-800">Data e Hora</th>
+                  <th className="px-2 py-1 text-right font-semibold text-gray-800">Valor / Curtida</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {sortedOffers.map((offer) => (
                   <tr key={offer.id}>
-                    <td className="px-3 py-1 text-left text-xs text-black">
+                    <td className="px-2 py-1 text-left text-xs text-black">
                       {offer.Usuario || "n/a"}
                       <p className="text-gray-600 underline">{offer.Email || "n/a"}</p>
-                      {offer.Whatsapp ? <p className="text-gray-600">{offer.Whatsapp}</p> : <></>}
+                      {offer.Whatsapp ? <p className="text-gray-600">{offer.Whatsapp}</p> : null}
                     </td>
-                    <td className="px-3 py-1 text-center dark:text-gray-700">{offer.DataCriacao}</td>
-                    <td className="px-3 py-1 text-right dark:text-gray-700">{`R$ ${offer.ValorOferta.toFixed(2)}`}</td>
+                    <td className="px-2 py-1 align-top text-center dark:text-gray-700">{offer.DataCriacao}</td>
+                    <td className="flex justify-end px-2 py-1">{offer.ValorOferta === 0 ? <>{heartIconSvg}</> : `R$ ${offer.ValorOferta.toFixed(2)}`}</td>
                   </tr>
                 ))}
               </tbody>

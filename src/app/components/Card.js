@@ -41,9 +41,11 @@ function Card({ game }) {
           <p className="text-xs sm:text-sm">
             <span className="font-semibold">{`${game.condition} ${conditionDescription}`}</span>
           </p>
-          <p className="text-xs sm:text-sm">
-            Maior Oferta: <span className="font-semibold">{game.maiorOferta ? `R$ ${game.maiorOferta.toFixed(2)}` : "-"}</span>
-          </p>
+          {game.maiorOferta > 0 && (
+            <p className="text-xs sm:text-sm">
+              Maior Oferta: <span className="font-semibold">R$ {game.maiorOferta.toFixed(2)}</span>
+            </p>
+          )}
         </div>
       </div>
     </Link>

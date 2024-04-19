@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import { AuthProvider } from "../context/AuthContext";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 import "./globals.css";
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
           {children}
           <Footer />
         </body>
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
       </html>
     </AuthProvider>
   );

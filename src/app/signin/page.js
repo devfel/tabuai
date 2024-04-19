@@ -1,8 +1,9 @@
 // src/app/signin/page.js
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
+import municipiosData from "../data/municipios.json";
 import Link from "next/link";
 import ToastSignin from "../components/ToastSignin";
 import LoadingIndicator from "../components/LoadingIndicator";
@@ -18,6 +19,21 @@ const SigninPage = () => {
   const [showToastSignin, setShowToastSignin] = useState(false);
   const [accCreatedSuccess, setaccCreatedSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [estado, setEstado] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [cities, setCities] = useState([]);
+
+  // Convert and sort states
+  const sortedStates = Object.entries(municipiosData.states).sort((a, b) => a[1].localeCompare(b[1]));
+
+  // Conditionally add the cities that belong to the selected state
+  useEffect(() => {
+    if (estado) {
+      const filteredCities = municipiosData.cities.filter((city) => city.state_id.toString() === estado).sort((a, b) => a.name.localeCompare(b.name)); // Sort cities alphabetically
+      setCities(filteredCities);
+      setCidade(""); // Reset city selection when state changes
+    }
+  }, [estado]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,9 +45,11 @@ const SigninPage = () => {
       username,
       email,
       password,
+      estado,
+      cidade,
     };
 
-    // Conditionally add the whatsapp field if it's not empty
+    // Conditionally add the whatsapp field if it's not empty removing spaces
     if (whatsapp.trim()) {
       payload.whatsapp = whatsapp;
     }
@@ -93,18 +111,44 @@ const SigninPage = () => {
   return (
     <div className="max-w-md mx-auto my-10 p-5 border rounded-lg">
       <h2 className="text-2xl font-semibold mb-5">Criar Conta</h2>
-      <form onSubmit={handleSubmit} className="space-y-4" autocomplete="off">
+      <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
         <div>
           <label htmlFor="nomeUsuario" className="block mb-1">
             Nome Completo
           </label>
-          <input id="nomeUsuario" minLength="3" maxLength="40" type="text" autocomplete="off" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
+          <input id="nomeUsuario" minLength="3" maxLength="40" type="text" autoComplete="off" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         <div>
           <label htmlFor="whatsapp" className="block mb-1">
             WhatsApp (Opcional)
           </label>
-          <input id="whatsapp" type="text" autocomplete="off" value={whatsapp} onChange={handleWhatsAppChange} className="w-full border p-2 text-gray-900 rounded-lg" />{" "}
+          <input id="whatsapp" type="text" autoComplete="off" value={whatsapp} onChange={handleWhatsAppChange} className="w-full border p-2 text-gray-900 rounded-lg" />{" "}
+        </div>
+        <div>
+          <label htmlFor="estado" className="block mb-1">
+            Estado
+          </label>
+          <select id="estado" value={estado} onChange={(e) => setEstado(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required>
+            <option value="">Selecione um Estado</option>
+            {sortedStates.map(([key, name]) => (
+              <option key={key} value={key}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="cidade" className="block mb-1">
+            Cidade
+          </label>
+          <select id="cidade" value={cidade} onChange={(e) => setCidade(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required>
+            <option value="">Selecione uma Cidade</option>
+            {cities.map((city) => (
+              <option key={city.id} value={city.id}>
+                {city.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label htmlFor="email" className="block mb-1">
@@ -115,7 +159,7 @@ const SigninPage = () => {
             maxLength="50"
             id="email"
             type="email"
-            autocomplete="off"
+            autoComplete="off"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value.toLowerCase());
@@ -129,7 +173,7 @@ const SigninPage = () => {
           <label htmlFor="password" className="block mb-1">
             Password
           </label>
-          <input id="password" type="password" autocomplete="off" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
+          <input id="password" type="password" autoComplete="off" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         <div>
           <p className="block mb-2 text-xs text-gray-700 dark:text-gray-300">

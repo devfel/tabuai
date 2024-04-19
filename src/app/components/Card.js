@@ -11,14 +11,18 @@ const conditionMappings = {
   Estrupiado: "(DM)",
 };
 
+const highlight_IDs = [257];
+
 function Card({ game }) {
   const [integerPart, decimalPart] = game.price.toFixed(2).split(".");
   const conditionDescription = conditionMappings[game.condition] || "(N/A)";
+  const isHighlighted = highlight_IDs.includes(game.id);
 
   return (
     <Link href={`/product/${game.id}`} passHref>
-      <div className="flex flex-row sm:flex-col cursor-pointer bg-white rounded-lg border border-gray-200 shadow-md hover:shadow-md hover:shadow-gray-950 dark:bg-gray-800 dark:border-gray-700 w-full group">
-        <div className="w-5/12 sm:w-full sm:flex sm:justify-center items-center overflow-hidden rounded-t-lg p-2 bg-gray-300 h-48 sm:h-52">
+      <div className="relative flex flex-row sm:flex-col cursor-pointer bg-white rounded-lg border border-gray-200 shadow-md hover:shadow-md hover:shadow-gray-950 dark:bg-gray-800 dark:border-gray-700 w-full group">
+        <div className="w-5/12 sm:w-full sm:flex sm:justify-center items-center overflow-hidden rounded-l-lg sm:rounded-t-lg p-2 bg-gray-300 h-48 sm:h-52">
+          {isHighlighted && <div className="absolute top-0 left-0 right-0 bg-red-600 overflow-hidden rounded-t-lg text-white text-sm font-bold text-center">Bão dimais da conta!</div>}
           <img className="max-w-none h-full w-full object-contain" src={game.image} alt={game.name} />
         </div>
         <div className="p-4 w-7/12 sm:w-full" style={{ height: "170px" }}>

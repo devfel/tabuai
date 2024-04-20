@@ -11,7 +11,7 @@ const conditionMappings = {
   Estrupiado: "(DM)",
 };
 
-const highlight_IDs = [257];
+const highlight_IDs = [257, 264];
 
 function Card({ game }) {
   const [integerPart, decimalPart] = game.price.toFixed(2).split(".");

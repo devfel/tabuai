@@ -122,7 +122,6 @@ const CreateBoardGamePage = () => {
       setCreatedGameId(result.id);
       setShowToast(true);
       clearForm();
-      // Implemente a lógica de sucesso aqui, como redirecionamento ou exibição de mensagem
     } catch (error) {
       setShowToastError(true);
       console.error("Erro no catch:", error);
@@ -239,7 +238,7 @@ const CreateBoardGamePage = () => {
               ?
             </button>
           </label>
-          <select name="Condition" id="Condition" required onChange={handleChange} className="mt-1 block w-full p-2 border dark:text-gray-700 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+          <select name="Condition" id="Condition" required value={formData.Condition} onChange={handleChange} className="mt-1 block w-full p-2 border dark:text-gray-700 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
             <option value="">Selecione uma condição</option>
             <option value="Quinem da loja">Quinem na loja (M)</option>
             <option value="Só abri pá vê">Só abri pá vê (NM)</option>

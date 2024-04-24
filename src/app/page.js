@@ -132,8 +132,6 @@ export default function Home() {
             <input className="text-black pl-10 pr-4 py-2 border border-gray-300 w-full md:w-auto max-w-80 rounded-lg shadow" placeholder="Buscar jogo..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
           </div>
 
-          <div className="text-xl text-red-600 font-bold"> SISTEMA EM MANUTENÇÃO - NÃO FUNCIONANDO CORRETAMENTE! Devemos terminar a manutenção até as 1:30 da manha de 24/04! Obrigado. </div>
-
           <div className="flex items-center space-x-2">
             <label className="text-sm font-medium text-gray-600">Ordenar:</label>
             <div className="relative">
@@ -157,6 +155,8 @@ export default function Home() {
             Não conhece esse trem? Uai, clica aqui sô!
           </Link>
         </div>
+
+        <div className="flex justify-center items-center h-64 text-xl text-red-600 font-bold"> SISTEMA EM MANUTENÇÃO - NÃO FUNCIONANDO CORRETAMENTE! Devemos terminar a manutenção até as 1:30 da manha de 24/04! Obrigado. </div>
 
         {isLoading ? (
           <div className="flex justify-center items-center h-64">

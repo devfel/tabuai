@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [isUserDetailsLoading, setIsUserDetailsLoading] = useState(true);
   const [isBoardGamesLoading, setIsBoardGamesLoading] = useState(true);
   const [isBoardGamesWithOffersLoading, setIsBoardGamesWithOffersLoading] = useState(true);
+  const [isUserQuestionsLoading, setIsUserQuestionsLoading] = useState(true);
 
   // Fetch and set user data
   useEffect(() => {
@@ -151,8 +152,9 @@ export default function Dashboard() {
       if (!userDataState || !userDataState.id) return;
       const userToken = localStorage.getItem("token");
 
+      setIsUserQuestionsLoading(true);
       try {
-        const url = `${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/questions?filters[users_permissions_user][id][$eq]=${userDataState.id}&populate=board_game,answer&pagination[page]=1&pagination[pageSize]=9&sort=id:desc`;
+        const url = `${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/questions?filters[users_permissions_user][id][$eq]=${userDataState.id}&populate=board_game,users_permissions_user,answer.users_permissions_user&pagination[page]=1&pagination[pageSize]=9&sort=id:desc`;
         const response = await fetch(url, {
           headers: {
             "Content-Type": "application/json",
@@ -166,6 +168,8 @@ export default function Dashboard() {
         setUserQuestions(data);
       } catch (error) {
         console.error("Failed to fetch user questions:", error);
+      } finally {
+        setIsUserQuestionsLoading(false);
       }
     };
 
@@ -212,15 +216,21 @@ export default function Dashboard() {
           <div className="flex items-center justify-between px-4 py-2 mt-2 bg-gray-800 border border-gray-800 rounded-lg min-h-16">
             <h5 className="text-lg font-bold text-white">Minhas Últimas Perguntas:</h5>
           </div>
-
-          {userQuestions.length > 0 ? (
-            <div className="space-y-4 mt-2 bg-gray-300 p-4 rounded-md">
+          {isUserQuestionsLoading ? (
+            <div className="flex flex-col justify-center items-center p-4 bg-gray-100 border border-gray-200 rounded-lg mt-2">
+              <>
+                <LoadingIndicator />
+                <span className="mt-2">Carregando Minhas Perguntas...</span>
+              </>
+            </div>
+          ) : userQuestions.length > 0 ? (
+            <div className="mt-2 bg-gray-300 px-4 rounded-md">
               {userQuestions.map((question) => (
                 <QuestionAnswerCard key={question.id} question={question} />
               ))}
             </div>
           ) : (
-            <div className="space-y-4 mt-2 bg-gray-300 p-4 rounded-md dark:text-gray-600">
+            <div className="mt-2 bg-gray-300 p-4 rounded-md dark:text-gray-600">
               <p>Você não fez nenhuma pergunta ainda. </p>
             </div>
           )}

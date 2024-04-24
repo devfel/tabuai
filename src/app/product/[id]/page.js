@@ -64,6 +64,21 @@ const ProductPage = ({ params }) => {
     return new Date(dateString).toLocaleDateString("pt-BR", options);
   }
 
+  function standardizeName(fullName) {
+    if (!fullName) return "Usuário Anônimo";
+
+    const names = fullName.trim().split(/\s+/); // Split by one or more spaces
+    if (names.length === 1) {
+      return names[0].charAt(0).toUpperCase() + names[0].slice(1).toLowerCase(); // Handle single name case
+    }
+
+    const firstName = names[0];
+    const lastName = names[names.length - 1];
+
+    // Capitalize first and last name ONLY
+    return [firstName, lastName].map((name) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()).join(" ");
+  }
+
   React.useEffect(() => {
     const fetchGame = async () => {
       setIsLoading(true);
@@ -73,7 +88,7 @@ const ProductPage = ({ params }) => {
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/board-games/${params.id}?populate=Images,owner,CoverImage,Ofertas,questions,answers.question`, { headers });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/board-games/${params.id}?populate=Images,owner,CoverImage,Ofertas,answers.question,questions.users_permissions_user,answers.users_permissions_user`, { headers });
         if (!res.ok) {
           throw new Error("Failed to fetch");
         }
@@ -122,10 +137,12 @@ const ProductPage = ({ params }) => {
             createdAt: questionAttributes.createdAt,
             updatedAt: questionAttributes.updatedAt,
             publishedAt: questionAttributes.publishedAt,
+            user: questionData.attributes.users_permissions_user?.data,
             answer: answerData
               ? {
                   content: answerData.attributes.Content,
                   createdAt: answerData.attributes.createdAt,
+                  user: answerData.attributes.users_permissions_user?.data,
                 }
               : null,
           };
@@ -319,6 +336,7 @@ const ProductPage = ({ params }) => {
         id: answerData.data.id,
         content: answerData.data.attributes.Content,
         createdAt: answerData.data.attributes.createdAt,
+        user: answerData.data.attributes.users_permissions_user?.data,
       };
 
       // Update the questions in the state with the new answer
@@ -643,11 +661,19 @@ const ProductPage = ({ params }) => {
               <div className="space-y-4 mt-6">
                 {game.questions.map((q) => (
                   <div key={q.id} className="bg-gray-100 p-2 rounded-md text-sm">
-                    <div className="text-[0.65rem] italic text-gray-500">{formatDate(q.createdAt)}</div> {/* Timestamp for the question */}
+                    <div className="text-[0.65rem] italic text-gray-500">
+                      <span className="">{q.user && q.user.attributes.nomeUsuario ? `${standardizeName(q.user.attributes.nomeUsuario)}` : "Usuário Anônimo"}</span>
+                      {`, em `}
+                      {formatDate(q.createdAt)}
+                    </div>
                     <p className="text-gray-800 font-medium whitespace-pre-wrap">{q.content}</p>
                     {q.answer ? (
                       <div className="ml-6 mt-2 border border-gray-200 p-2 rounded-md">
-                        <div className="text-[0.65rem] italic text-gray-500">{formatDate(q.answer.createdAt)}</div> {/* Timestamp for the answer */}
+                        <div className="text-[0.65rem] italic text-gray-500">
+                          <span className="">{q.answer && q.answer.user && q.answer.user.attributes.nomeUsuario ? `${standardizeName(q.answer.user.attributes.nomeUsuario)}` : "Usuário Anônimo"}</span>
+                          {`, em `}
+                          {formatDate(q.answer.createdAt)}
+                        </div>
                         <p className="text-gray-800 font-light whitespace-pre-wrap">{q.answer.content}</p>
                       </div>
                     ) : (

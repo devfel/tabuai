@@ -336,7 +336,11 @@ const ProductPage = ({ params }) => {
         id: answerData.data.id,
         content: answerData.data.attributes.Content,
         createdAt: answerData.data.attributes.createdAt,
-        user: answerData.data.attributes.users_permissions_user?.data,
+        user: {
+          attributes: {
+            nomeUsuario: currentUser.nomeUsuario,
+          },
+        },
       };
 
       // Update the questions in the state with the new answer
@@ -545,6 +549,7 @@ const ProductPage = ({ params }) => {
             </Slider>
           </div>
           {/* Product info */}
+
           <div className="mt-8 px-4 sm:px-0 sm:mt-16 lg:mt-0 lg:col-start-2 lg:col-span-1">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200">{game.name}</h2>
             <p className="mt-5 text-3xl text-gray-900 dark:text-gray-200">{`R$ ${game.price.toFixed(2)}`}</p>

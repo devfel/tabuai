@@ -1,3 +1,4 @@
+// ../src/app/components/dashboard/page.js
 "use client";
 import Card from "../components/Card";
 import Link from "next/link";
@@ -6,6 +7,7 @@ import { useEffect, useState } from "react";
 import OwnerCard from "../components/OwnerCard";
 import OwnerOfertaCard from "../components/OwnerOfertaCard";
 import LoadingIndicator from "../components/LoadingIndicator";
+import QuestionAnswerCard from "../components/QuestionAnswerCard";
 
 import { useRouter } from "next/navigation";
 
@@ -16,6 +18,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [userDataState, setUserDataState] = useState(null);
   const [refreshOffers, setRefreshOffers] = useState(false);
+  const [userQuestions, setUserQuestions] = useState([]);
 
   const [isUserDetailsLoading, setIsUserDetailsLoading] = useState(true);
   const [isBoardGamesLoading, setIsBoardGamesLoading] = useState(true);
@@ -82,6 +85,8 @@ export default function Dashboard() {
           idioma: item.attributes.Idioma,
           maiorOferta: item.attributes.MaiorOferta,
           offers: item.attributes.Ofertas.data,
+          questions: item.attributes.questions.data ?? [],
+          answers: item.attributes.answers.data ?? [],
           image: item.attributes.Images.data?.[0]?.attributes.url ? `${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL_IMAGES}${item.attributes.Images.data[0].attributes.url}` : "/placeholder02c.png",
         }));
 
@@ -140,6 +145,33 @@ export default function Dashboard() {
     fetchBoardGamesWithOffers();
   }, [userDataState, refreshOffers]);
 
+  // ----- Fetch Logged-in User QUESTIONS -----
+  useEffect(() => {
+    const fetchUserQuestions = async () => {
+      if (!userDataState || !userDataState.id) return;
+      const userToken = localStorage.getItem("token");
+
+      try {
+        const url = `${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/questions?filters[users_permissions_user][id][$eq]=${userDataState.id}&populate=board_game,answer&pagination[page]=1&pagination[pageSize]=9&sort=id:desc`;
+        const response = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch questions");
+
+        const { data } = await response.json();
+        setUserQuestions(data);
+      } catch (error) {
+        console.error("Failed to fetch user questions:", error);
+      }
+    };
+
+    fetchUserQuestions();
+  }, [userDataState]);
+
   const handleOfferDeleted = () => {
     // Re-fetch the game details when an offer is deleted
     setRefreshOffers((prev) => !prev);
@@ -175,6 +207,26 @@ export default function Dashboard() {
           </div>
         )}
 
+        {/* Layout de Grid para Minhas Perguntas */}
+        <div className="my-8">
+          <div className="flex items-center justify-between px-4 py-2 mt-2 bg-gray-800 border border-gray-800 rounded-lg min-h-16">
+            <h5 className="text-lg font-bold text-white">Minhas Últimas Perguntas:</h5>
+          </div>
+
+          {userQuestions.length > 0 ? (
+            <div className="space-y-4 mt-2 bg-gray-300 p-4 rounded-md">
+              {userQuestions.map((question) => (
+                <QuestionAnswerCard key={question.id} question={question} />
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4 mt-2 bg-gray-300 p-4 rounded-md">
+              {" "}
+              <p>Você não fez nenhuma pergunta ainda. </p>
+            </div>
+          )}
+        </div>
+
         {/* Layout de Grid para Meus Jogos e Minhas Ofertas */}
         <div className="lg:grid lg:grid-cols-2 lg:gap-8 mt-4">
           {/* Meus Jogos */}
@@ -204,7 +256,7 @@ export default function Dashboard() {
           {/* Minhas Ofertas */}
           <div>
             <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border border-gray-800 rounded-lg min-h-16">
-              <h5 className="text-lg font-bold text-white">Minhas Ofertas</h5>
+              <h5 className="text-lg font-bold text-white">Minhas Ofertas e Curtidas</h5>
             </div>
             {isBoardGamesWithOffersLoading ? (
               <div className="flex flex-col justify-center items-center p-4 bg-gray-100 border border-gray-200 rounded-lg mt-2">

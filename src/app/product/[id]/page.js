@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import LanguageFlag from "../../components/ReactWorldFlags";
 import ToastOferta from "../../components/ToastOferta";
 import ToastLogin from "../../components/ToastLogin";
+import ToastSignin from "../../components/ToastSignin";
 import { useAuth } from "../../../context/AuthContext";
 import LoadingIndicator from "../../components/LoadingIndicator";
 
@@ -24,6 +25,11 @@ const ProductPage = ({ params }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreatingOffer, setIsCreatingOffer] = useState(false);
+  const [newQuestion, setNewQuestion] = useState("");
+  const [createQuestion, setCreateQuestion] = useState(null);
+  const [answers, setAnswers] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isOwner, setIsOwner] = useState(false);
 
   const [createOffer, setCreateOffer] = useState(null);
   const [showToastOferta, setShowToastOferta] = useState(false);
@@ -32,6 +38,8 @@ const ProductPage = ({ params }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { isLoggedIn } = useAuth();
   const [showToastLogin, setShowToastLogin] = useState(false);
+  const [isSubmittingQuestion, setIsSubmittingQuestion] = useState(false);
+  const [showToastQuestion, setShowToastQuestion] = useState(false);
 
   const moneyIconSvg = (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 h-6 w-6">
@@ -50,6 +58,11 @@ const ProductPage = ({ params }) => {
     </svg>
   );
 
+  function formatDate(dateString) {
+    const options = { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" };
+    return new Date(dateString).toLocaleDateString("pt-BR", options);
+  }
+
   React.useEffect(() => {
     const fetchGame = async () => {
       setIsLoading(true);
@@ -59,7 +72,7 @@ const ProductPage = ({ params }) => {
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/board-games/${params.id}?populate=*`, { headers });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/board-games/${params.id}?populate=Images,owner,CoverImage,Ofertas,questions,answers.question`, { headers });
         if (!res.ok) {
           throw new Error("Failed to fetch");
         }
@@ -96,6 +109,27 @@ const ProductPage = ({ params }) => {
           });
         }
 
+        // Process the questions and answers from the response
+        const questionsWithAnswers = json.data.attributes.questions.data.map((questionData) => {
+          const questionId = questionData.id;
+          const questionAttributes = questionData.attributes;
+          const answerData = json.data.attributes.answers.data.find((answer) => answer.attributes.question.data.id === questionId);
+
+          return {
+            id: questionId,
+            content: questionAttributes.Content,
+            createdAt: questionAttributes.createdAt,
+            updatedAt: questionAttributes.updatedAt,
+            publishedAt: questionAttributes.publishedAt,
+            answer: answerData
+              ? {
+                  content: answerData.attributes.Content,
+                  createdAt: answerData.attributes.createdAt,
+                }
+              : null,
+          };
+        });
+
         // Set the game state with the processed images
         setGame({
           id: json.data.id,
@@ -107,6 +141,8 @@ const ProductPage = ({ params }) => {
           idioma: json.data.attributes.Idioma,
           maiorOferta: json.data.attributes.MaiorOferta,
           images: gameImages,
+          questions: questionsWithAnswers,
+          bgOwner: json.data.attributes.owner.data,
         });
 
         setOfferValue(json.data.attributes.Value); // Set the initial offer value to the game price
@@ -131,6 +167,7 @@ const ProductPage = ({ params }) => {
     fetchGame();
   }, [params.id, refreshPage]);
 
+  // ----- Create a new OFFER -----
   useEffect(() => {
     const createOferta = async () => {
       if (!createOffer) {
@@ -193,6 +230,123 @@ const ProductPage = ({ params }) => {
 
     createOferta();
   }, [createOffer]); // This effect runs when `createOffer` changes.
+
+  // ----- Create a new QUESTION -----
+  useEffect(() => {
+    const submitQuestion = async () => {
+      if (!createQuestion) {
+        return;
+      }
+
+      setIsSubmittingQuestion(true);
+
+      const { content, boardGameId } = createQuestion;
+      const token = localStorage.getItem("token");
+      const headers = token
+        ? {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        : {
+            "Content-Type": "application/json",
+          };
+      const body = JSON.stringify({ data: { Content: content, board_game: boardGameId, users_permissions_user: currentUser.id } });
+
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/questions`, {
+          method: "POST",
+          headers,
+          body,
+        });
+
+        if (!res.ok) {
+          throw new Error(`Failed to submit question: ${res.status}`);
+        }
+
+        // Reset the form field and refresh related data
+        setShowToastQuestion(true);
+        setNewQuestion("");
+        setCreateQuestion(null); // Reset trigger state after successful submission
+        setRefreshPage((prev) => !prev);
+      } catch (error) {
+        console.error("Failed to submit question:", error);
+      } finally {
+        setIsSubmittingQuestion(false); // Set loading false
+      }
+    };
+
+    submitQuestion();
+  }, [createQuestion]); // This effect runs when `createQuestion` changes.
+
+  // ----- Create a new ANSWER -----
+  const handleAnswerSubmit = async (questionId, answer) => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+    const body = JSON.stringify({
+      data: {
+        Content: answer,
+        question: questionId,
+        board_game: game.id,
+        users_permissions_user: currentUser.id,
+      },
+    });
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/answers`, {
+        method: "POST",
+        headers,
+        body,
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to submit answer: ${res.status}`);
+      }
+
+      const updatedAnswer = await res.json();
+
+      // Immediately reflect the answer in the UI without re-fetching from the server
+      const updatedQuestions = game.questions.map((q) => (q.id === questionId ? { ...q, answer: answer } : q));
+
+      setGame({ ...game, questions: updatedQuestions });
+      setAnswers({ ...answers, [questionId]: "" }); // Reset the textarea for the answered question
+    } catch (error) {
+      console.error("Failed to submit answer:", error);
+    }
+  };
+
+  // ----- CHECK BOARDGAME ONWERSHIP -----
+  // Fetch the current user data and compare with the game owner ID
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.log("User is not logged in.");
+        setIsOwner(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) throw new Error("Failed to fetch user details");
+
+        const userData = await response.json();
+        setCurrentUser(userData);
+
+        // Compare the fetched user ID with the game owner ID
+        setIsOwner(userData.id === game.bgOwner.id);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchCurrentUser();
+  }, [game]);
 
   // Button click handler that triggers the offer creation
   const handleOfferSubmit = () => {
@@ -432,6 +586,69 @@ const ProductPage = ({ params }) => {
               <p className="text-md text-gray-700 whitespace-pre-wrap">{game.description}</p>
             </div>
           </div>
+
+          <div className="mt-6 lg:col-start-1 lg:col-span-2 bg-gray-300 p-2 rounded-md">
+            <h3 className="text-lg font-semibold">Perguntas e Respostas:</h3>
+            <div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  // Prepare the state for the useEffect trigger
+                  setCreateQuestion({
+                    content: newQuestion,
+                    boardGameId: game.id,
+                  });
+                }}
+              >
+                <div>
+                  <p className=" text-xs text-gray-700 dark:text-gray-300">
+                    <span className="font-bold">Importante:</span> Trate o colega com respeito, inclusive sobre os VALORES pedidos. <br></br>Excluindo conteúdos ofensivos, pode perguntar/comentar livremente, inclusive com links externos dos jogos ou dados pessoais (embora esse último seja desaconselhado pois ficarão públicos).
+                  </p>
+                </div>
+                <textarea value={newQuestion} onChange={(e) => setNewQuestion(e.target.value)} placeholder="Digite sua pergunta aqui..." className="w-full rounded text-sm bg-white border-gray-300 p-2 mt-2" />
+                <button
+                  type="submit"
+                  className="bg-gray-800 border border-transparent rounded-md py-1 px-2 flex items-center justify-center text-sm text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  disabled={!newQuestion.trim() || isSubmittingQuestion} // Disable the button if the input is empty or submitting question
+                >
+                  {isSubmittingQuestion ? <LoadingIndicator /> : "Enviar Pergunta"}
+                </button>
+              </form>
+            </div>
+
+            {game.questions && game.questions.length > 0 ? (
+              <div className="space-y-4 mt-6">
+                {game.questions.map((q) => (
+                  <div key={q.id} className="bg-gray-100 p-2 rounded-md text-sm">
+                    <div className="text-[0.65rem] italic text-gray-500">{formatDate(q.createdAt)}</div> {/* Timestamp for the question */}
+                    <p className="text-gray-800 font-medium whitespace-pre-wrap">{q.content}</p>
+                    {q.answer ? (
+                      <div className="ml-6 mt-2 border border-gray-200 p-2 rounded-md">
+                        <div className="text-[0.65rem] italic text-gray-500">{formatDate(q.answer.createdAt)}</div> {/* Timestamp for the answer */}
+                        <p className="text-gray-800 font-light whitespace-pre-wrap">{q.answer.content}</p>
+                      </div>
+                    ) : (
+                      isOwner && (
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            handleAnswerSubmit(q.id, answers[q.id]);
+                          }}
+                        >
+                          <textarea value={answers[q.id] || ""} onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })} className="ml-6 w-11/12 rounded text-sm placeholder-blue-400 bg-gray-200 border-gray-300 p-2 mt-2" placeholder="Digite sua resposta aqui..." />
+                          <button type="submit" className="ml-6 bg-gray-800 border border-transparent rounded-md py-1 px-2 flex items-center justify-center text-sm text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled={!answers[q.id]?.trim()}>
+                            Enviar Resposta
+                          </button>
+                        </form>
+                      )
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>Nenhuma pergunta foi feita ainda.</p>
+            )}
+          </div>
         </div>
         {/* Image Modal */}
         {selectedImage && (
@@ -443,6 +660,7 @@ const ProductPage = ({ params }) => {
       {showToastInterest && <ToastOferta message={`Agora cê pode vê o contato do Dono em "Minha Conta".`} onDismiss={() => setShowToastOferta(false)} />}
       {showToastOferta && <ToastOferta message={`Sua oferta de R$ ${submittedOfferValue.toFixed(2)} foi realizada com Sucesso!`} onDismiss={() => setShowToastOferta(false)} />}
       {showToastLogin && <ToastLogin message={`Você precisa estar logado para fazer uma oferta! É bem rapidinho.`} onDismiss={() => setShowToastLogin(false)} />}
+      {showToastQuestion && <ToastSignin message={`Sua pergunta foi enviada com sucesso.`} onDismiss={() => setShowToastQuestion(false)} />}
     </div>
   );
 };

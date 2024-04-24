@@ -5,6 +5,8 @@ import Link from "next/link";
 
 function OwnerCard({ game }) {
   const [offerDetails, setOfferDetails] = useState([]);
+  const [unansweredCount, setUnansweredCount] = useState(0);
+
   const userToken = localStorage.getItem("token");
 
   const heartIconSvg = (
@@ -63,6 +65,18 @@ function OwnerCard({ game }) {
     }
   }, [game.offers]);
 
+  useEffect(() => {
+    if (game) {
+      // Safe access using optional chaining
+      const totalQuestions = game.questions?.length ?? 0;
+      const totalAnswers = game.answers?.length ?? 0;
+
+      // Calculate unanswered questions
+      const unansweredQuestions = totalQuestions - totalAnswers;
+      setUnansweredCount(unansweredQuestions);
+    }
+  }, [game]);
+
   const toggleActiveStatus = async () => {
     const newActiveStatus = !game.statusActive;
 
@@ -106,6 +120,13 @@ function OwnerCard({ game }) {
         <p className="text-base dark:text-gray-700">
           Preço: <span className="font-semibold dark:text-gray-700">{` R$ ${game.price}`}</span>
         </p>
+
+        {/* Displaying the count of unanswered questions */}
+        <Link href={`/product/${game.id}`} passHref>
+          <p className={unansweredCount > 0 ? "text-blue-600 font-semibold hover:underline" : "text-base dark:text-gray-700"}>
+            Responder: <span className="">{unansweredCount}</span>
+          </p>
+        </Link>
       </div>
 
       {/* Action Buttons */}
@@ -150,33 +171,3 @@ function OwnerCard({ game }) {
 }
 
 export default OwnerCard;
-
-// FETCH OFERTA ID USUARIO EXAMPLE
-// http://localhost:1337/api/ofertas/51?populate[usuario_fez_oferta_id]=*
-// {
-// 	"data": {
-// 		"id": 51,
-// 		"attributes": {
-// 			"ValorOferta": 2999,
-// 			"createdAt": "2024-03-26T19:34:41.506Z",
-// 			"updatedAt": "2024-03-26T19:34:41.535Z",
-// 			"publishedAt": "2024-03-26T19:34:41.504Z",
-// 			"UsuarioDaOfertaID": 1,
-// 			"usuario_fez_oferta_id": {
-// 				"data": {
-// 					"id": 1,
-// 					"attributes": {
-// 						"username": "lucas",
-// 						"email": "lucas@gmail.com",
-// 						"provider": "local",
-// 						"confirmed": true,
-// 						"blocked": false,
-// 						"createdAt": "2024-03-19T02:44:14.601Z",
-// 						"updatedAt": "2024-03-19T02:49:44.297Z"
-// 					}
-// 				}
-// 			}
-// 		}
-// 	},
-// 	"meta": {}
-// }

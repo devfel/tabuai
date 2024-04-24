@@ -332,32 +332,35 @@ const ProductPage = ({ params }) => {
   // ----- CHECK BOARDGAME ONWERSHIP -----
   // Fetch the current user data and compare with the game owner ID
   useEffect(() => {
-    const fetchCurrentUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.log("User is not logged in.");
-        setIsOwner(false);
-        return;
-      }
+    if (game && game.bgOwner) {
+      const fetchCurrentUser = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.log("User is not logged in.");
+          setIsOwner(false);
+          return;
+        }
 
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/users/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) throw new Error("Failed to fetch user details");
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/users/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (!response.ok) throw new Error("Failed to fetch user details");
 
-        const userData = await response.json();
-        setCurrentUser(userData);
+          const userData = await response.json();
+          setCurrentUser(userData);
 
-        // Compare the fetched user ID with the game owner ID
-        setIsOwner(userData.id === game.bgOwner.id);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchCurrentUser();
+          // Compare the fetched user ID with the game owner ID
+
+          setIsOwner(userData.id === game.bgOwner.id);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+      fetchCurrentUser();
+    }
   }, [game]);
 
   // Button click handler that triggers the offer creation

@@ -251,7 +251,15 @@ const ProductPage = ({ params }) => {
         : {
             "Content-Type": "application/json",
           };
-      const body = JSON.stringify({ data: { Content: content, board_game: boardGameId, users_permissions_user: currentUser.id } });
+
+      let bodyData = {
+        Content: content,
+        board_game: boardGameId,
+      };
+      if (currentUser && currentUser.id) {
+        bodyData.users_permissions_user = currentUser.id; // Only add user ID if logged in
+      }
+      const body = JSON.stringify({ data: bodyData });
 
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/questions`, {

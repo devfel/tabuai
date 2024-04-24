@@ -522,17 +522,17 @@ const ProductPage = ({ params }) => {
           <div className="mt-8 px-4 sm:px-0 sm:mt-16 lg:mt-0 lg:col-start-2 lg:col-span-1">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200">{game.name}</h2>
             <p className="mt-5 text-3xl text-gray-900 dark:text-gray-200">{`R$ ${game.price.toFixed(2)}`}</p>
-            <div className="mt-5 flex items-center text-[1.02rem] text-gray-700">
+            <div className="mt-5 flex items-center text-[1.02rem] text-gray-700 dark:text-gray-300">
               <span className="mr-2">Idioma:</span> <span className="font-bold mr-2">{game.idioma || "Não especificado"}</span>
               <LanguageFlag idioma={game.idioma} />
             </div>
-            <p className="text-[1.02rem] text-gray-700 mt-5">
+            <p className="text-[1.02rem] text-gray-700 mt-5 dark:text-gray-300">
               Condição: <span className="font-bold">{game.condition}</span>
               <Link href="/condicao-boardgames" className="cursor-pointer hover:bg-gray-950 ml-2 px-[10px] py-1 bg-gray-700 rounded-full text-white">
                 ?
               </Link>
             </p>
-            <p className="my-5 text-[1.02rem] text-gray-700">
+            <p className="my-5 text-[1.02rem] text-gray-700 dark:text-gray-300">
               Melhor Oferta Recebida: <span className="font-bold">{game.maiorOferta ? `R$ ${game.maiorOferta.toFixed(2)}` : "Nenhuma oferta ainda"}</span>
             </p>
 
@@ -597,13 +597,13 @@ const ProductPage = ({ params }) => {
           </div>
           <div className="mt-6 lg:col-start-1 lg:col-span-2">
             <div className="text-base text-gray-700 space-y-2">
-              <p className="text-lg text-gray-700 font-bold">Informações Adicionais:</p>
-              <p className="text-md text-gray-700 whitespace-pre-wrap">{game.description}</p>
+              <p className="text-lg text-gray-700 font-bold dark:text-gray-300">Informações Adicionais:</p>
+              <p className="text-md text-gray-700 whitespace-pre-wrap dark:text-gray-300">{game.description}</p>
             </div>
           </div>
 
           <div className="mt-6 lg:col-start-1 lg:col-span-2 bg-gray-300 p-2 rounded-md">
-            <h3 className="text-lg font-semibold">Perguntas e Respostas:</h3>
+            <h3 className="text-lg font-semibold dark:text-gray-950">Perguntas e Respostas:</h3>
             <div>
               <form
                 onSubmit={(e) => {
@@ -616,11 +616,11 @@ const ProductPage = ({ params }) => {
                 }}
               >
                 <div>
-                  <p className=" text-xs text-gray-700 dark:text-gray-300">
+                  <p className=" text-xs text-gray-700 ">
                     <span className="font-bold">Importante:</span> Trate o colega com respeito, inclusive sobre os VALORES pedidos. <br></br>Excluindo conteúdos ofensivos, pode perguntar/comentar livremente, inclusive com links externos dos jogos ou dados pessoais (embora esse último seja desaconselhado pois ficarão públicos).
                   </p>
                 </div>
-                <textarea value={newQuestion} onChange={(e) => setNewQuestion(e.target.value)} placeholder="Digite sua pergunta aqui..." className="w-full rounded text-sm bg-white border-gray-300 p-2 mt-2" />
+                <textarea value={newQuestion} onChange={(e) => setNewQuestion(e.target.value)} placeholder="Digite sua pergunta aqui..." className="w-full rounded text-sm bg-white border-gray-300 p-2 mt-2 dark:text-gray-950" />
                 <button
                   type="submit"
                   className="bg-gray-800 border border-transparent rounded-md py-1 px-2 flex items-center justify-center text-sm text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
@@ -650,7 +650,7 @@ const ProductPage = ({ params }) => {
                             handleAnswerSubmit(q.id, answers[q.id]);
                           }}
                         >
-                          <textarea value={answers[q.id] || ""} onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })} className="ml-6 w-11/12 rounded text-sm placeholder-blue-400 bg-gray-200 border-gray-300 p-2 mt-2" placeholder="Digite sua resposta aqui..." />
+                          <textarea value={answers[q.id] || ""} onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })} className="ml-6 w-11/12 rounded text-sm placeholder-blue-400 bg-gray-200 border-gray-300 p-2 mt-2 dark:text-gray-950" placeholder="Digite sua resposta aqui..." />
                           <button type="submit" className="ml-6 bg-gray-800 border border-transparent rounded-md py-1 px-2 flex items-center justify-center text-sm text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled={!answers[q.id]?.trim()}>
                             Enviar Resposta
                           </button>

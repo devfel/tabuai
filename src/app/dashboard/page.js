@@ -220,8 +220,7 @@ export default function Dashboard() {
               ))}
             </div>
           ) : (
-            <div className="space-y-4 mt-2 bg-gray-300 p-4 rounded-md">
-              {" "}
+            <div className="space-y-4 mt-2 bg-gray-300 p-4 rounded-md dark:text-gray-600">
               <p>Você não fez nenhuma pergunta ainda. </p>
             </div>
           )}

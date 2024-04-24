@@ -40,6 +40,7 @@ const ProductPage = ({ params }) => {
   const [showToastLogin, setShowToastLogin] = useState(false);
   const [isSubmittingQuestion, setIsSubmittingQuestion] = useState(false);
   const [showToastQuestion, setShowToastQuestion] = useState(false);
+  const [showToastAnswer, setShowToastAnswer] = useState(false);
 
   const moneyIconSvg = (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 h-6 w-6">
@@ -305,13 +306,24 @@ const ProductPage = ({ params }) => {
         throw new Error(`Failed to submit answer: ${res.status}`);
       }
 
-      const updatedAnswer = await res.json();
+      const answerData = await res.json();
+      const newAnswer = {
+        id: answerData.data.id,
+        content: answerData.data.attributes.Content,
+        createdAt: answerData.data.attributes.createdAt,
+      };
 
-      // Immediately reflect the answer in the UI without re-fetching from the server
-      const updatedQuestions = game.questions.map((q) => (q.id === questionId ? { ...q, answer: answer } : q));
+      // Update the questions in the state with the new answer
+      const updatedQuestions = game.questions.map((q) => {
+        if (q.id === questionId) {
+          return { ...q, answer: newAnswer };
+        }
+        return q;
+      });
 
       setGame({ ...game, questions: updatedQuestions });
-      setAnswers({ ...answers, [questionId]: "" }); // Reset the textarea for the answered question
+      setAnswers({ ...answers, [questionId]: "" }); // Clear the answer textarea
+      setShowToastAnswer(true); // Show a success toast
     } catch (error) {
       console.error("Failed to submit answer:", error);
     }
@@ -661,6 +673,7 @@ const ProductPage = ({ params }) => {
       {showToastOferta && <ToastOferta message={`Sua oferta de R$ ${submittedOfferValue.toFixed(2)} foi realizada com Sucesso!`} onDismiss={() => setShowToastOferta(false)} />}
       {showToastLogin && <ToastLogin message={`Você precisa estar logado para fazer uma oferta! É bem rapidinho.`} onDismiss={() => setShowToastLogin(false)} />}
       {showToastQuestion && <ToastSignin message={`Sua pergunta foi enviada com sucesso.`} onDismiss={() => setShowToastQuestion(false)} />}
+      {showToastAnswer && <ToastSignin message={`Sua resposta foi enviada com sucesso.`} onDismiss={() => setShowToastAnswer(false)} />}
     </div>
   );
 };

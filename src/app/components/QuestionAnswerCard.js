@@ -23,14 +23,6 @@ function QuestionAnswerCard({ question }) {
     return [firstName, lastName].map((name) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()).join(" ");
   }
 
-  console.log(question);
-
-  //   <Link href={`/product/${game.id}`} passHref>
-  //   <h5 className="text-lg font-bold text-black hover:text-gray-700 hover:underline transition-colors duration-200 ease-in-out">{game.name}</h5>
-  //     Responder: <span className="">{unansweredCount}</span>
-  //   </p>
-  // </Link>
-
   return (
     <div className="bg-gray-300 border-b-2 py-3 border-gray-100 px-2 rounded-md text-sm">
       <Link href={`/product/${question.attributes.board_game.data.id}`} passHref>

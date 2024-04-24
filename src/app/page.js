@@ -156,8 +156,6 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="flex justify-center items-center h-64 text-xl text-red-600 font-bold"> SISTEMA EM MANUTENÇÃO - NÃO FUNCIONANDO CORRETAMENTE! Devemos terminar a manutenção até as 1:30 da manha de 24/04! Obrigado. </div>
-
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <LoadingIndicator /> Carregando Jogos...

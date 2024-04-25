@@ -316,7 +316,7 @@ const ProductPage = ({ params }) => {
         Content: answer,
         question: questionId,
         board_game: game.id,
-        users_permissions_user: currentUser.id,
+        nomeUsuario: currentUser ? currentUser.nomeUsuario : "Usuário Anônimo",
       },
     });
 

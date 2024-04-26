@@ -311,12 +311,14 @@ const ProductPage = ({ params }) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     };
+
+    console.log("Current User: " + currentUser.id);
     const body = JSON.stringify({
       data: {
         Content: answer,
         question: questionId,
         board_game: game.id,
-        nomeUsuario: currentUser ? currentUser.nomeUsuario : "Usuário Anônimo",
+        users_permissions_user: currentUser ? currentUser.id : "Usuário Anônimo",
       },
     });
 

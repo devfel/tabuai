@@ -30,10 +30,13 @@ export default function About() {
           </p>
           <p className="mt-2 text-justify text-gray-700 dark:text-gray-200">- Até a efetivação do pagamento, podem haver desistências de ambos os lados, para evitar essas situações, encorajamos a comunicação clara e com compromisso.</p>
           <p className="mt-2 text-justify text-gray-700 dark:text-gray-200">- Imprevistos acontecem, porém, desistências tardias não são bem vistas. Assim, apreciamos a seriedade ao criar um anúncio ou fazer uma oferta.</p>
+          <p className="mt-2 text-justify text-gray-700 dark:text-gray-200">- Não coletamos, armazenamos, nem solicitamos dados financeiros dos usuários que estão comprando os jogos.</p>
           <p className="mt-2 text-justify text-gray-700 dark:text-gray-200">
             - Reforçamos que nossa plataforma <span className="font-semibold">NÃO</span> solicita pagamentos, depósitos, PIX ou nenhum outro pagamento para reserva de produtos ou finalizar o acordo.
           </p>
-          <p className="mt-2 text-justify text-gray-700 dark:text-gray-200">- Não coletamos, armazenamos nem solicitamos dados financeiros dos usuários que estão comprando os jogos.</p>
+          <p className="mt-2 text-justify text-gray-700 dark:text-gray-200">
+            - <span className="font-semibold">NÃO NOS RESPONSABILIZAMOS POR NENHUMA NEGOCIAÇÃO.</span> Tudo é feito exclusivamente entre os usuários.
+          </p>
           <p className="mt-2 text-justify text-gray-700 dark:text-gray-200">
             <span className="font-semibold"> - Nosso foco está apenas em facilitar a conexão entre entusiastas de board games e promover um ambiente de trocas. </span>
           </p>
@@ -45,7 +48,7 @@ export default function About() {
 
         {/* Seção Versão Completa */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-4">Versão Completa</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-4">Mais Informações</h2>
           <p className="mt-2 text-justify text-gray-700 dark:text-gray-200">Bem-vindo a TABUai, o portal feito por mineiro para conexão entre jogadores de Board Games para compra, venda e troca de jogos!</p>
           <p className="mt-2 text-justify text-gray-700 dark:text-gray-200">Nossa plataforma nasceu da paixão compartilhada por board games, com o objetivo de criar uma comunidade vibrante onde colecionadores e entusiastas podem comprar e vender jogos. Aqui, não somos uma loja online, mas sim um espaço de conexão direta entre vendedores e compradores de jogos novos e usados.</p>
           <p className="mt-2 text-justify text-gray-700 dark:text-gray-200">

@@ -259,3 +259,14 @@ export default function Home() {
 
 //Alterar Idioma na pagina principal para Fotinhas de Bandeiras.
 // ARRUMAR ORDENAÇÃO DOS JOGOS NO DASHBOARD (Só está contando a ordenação dos jogos na pagina, é precisa contar todo ARRAY "e voltar para a pagina 1 talvez?".)
+
+// -- MAIS RECENTE:
+
+// Quando curti um jogo, o botão de curtir nao esta ficando desabilitado, e nem recarrega pagina, pertindo multiplas curtidas.
+// Dono do jogo deve ser Padronizado tambem nos cards de owner e owneroferta.
+// outro tipo de padrao deve ser aplicado no Minhas Informacoes para o nome do usuario (Sem tirar nomes do meio)
+// Fazer Email para quando oferta for cubrida, mensagem for respondida, ou mensagem for enviada em jogo do dono.
+// Fazer Logot (Sumir com Minha conta) quando usuario for desconectado, verificar com alguma frequencia.
+
+// Usuario Anonimo na resposta de pergunta de alguns jogos.
+// Borda do Minhas Perguntas esta arredonda mas é so border botton e deve ser removido o arredondado.

@@ -177,9 +177,9 @@ const SigninPage = () => {
         </div>
         <div>
           <p className="block mb-2 text-xs text-gray-700 dark:text-gray-300">
-            <span className="font-bold">Importante:</span> Seu nome, endereço de email e número de whatsapp cadastrados serão compartilhados com outros usuários, por exemplo, com aqueles que receberem suas ofertas ou fizerem ofertas em seus anúncios.
+            <span className="font-bold">Importante:</span> Seu dados, como nome, endereço de email e número de whatsapp cadastrados serão compartilhados com outros usuários, por exemplo, com aqueles que receberem suas ofertas ou fizerem ofertas em seus anúncios.
           </p>
-          <p className="block mb-1 text-xs text-gray-700 dark:text-gray-300">No momento, essa é a única forma de contato entre os usuários.</p>
+          <p className="block mb-1 text-xs text-gray-700 dark:text-gray-300">Ao fazer o cadastro e utilizar o sistema você concorda com essas condições.</p>
         </div>
         <button type="submit" disabled={isLoading} className="w-full bg-gray-800 border border-transparent rounded-md py-2 px-4 font-medium text-white hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed">
           {isLoading ? (

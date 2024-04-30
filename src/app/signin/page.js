@@ -113,12 +113,12 @@ const SigninPage = () => {
   return (
     <div className="max-w-md mx-auto my-10 p-5 border rounded-lg">
       <h2 className="text-2xl font-semibold mb-5">Criar Conta</h2>
-      <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
+      <form onSubmit={handleSubmit} className="space-y-4" autoComplete="nope">
         <div>
           <label htmlFor="nomeUsuario" className="block mb-1">
             Nome Completo
           </label>
-          <input id="nomeUsuario" name="nomeUsuario" minLength="3" maxLength="40" type="text" autoComplete="off" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
+          <input id="nomeUsuario" name="nomeUsuario" minLength="3" maxLength="40" type="text" autoComplete="name" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         {/* <div>
           <label htmlFor="whatsapp" className="block mb-1">
@@ -168,7 +168,7 @@ const SigninPage = () => {
             maxLength="50"
             id="email"
             type="email"
-            autoComplete="off"
+            autoComplete="email"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value.toLowerCase());
@@ -182,7 +182,7 @@ const SigninPage = () => {
           <label htmlFor="password" className="block mb-1">
             Senha
           </label>
-          <input id="password" name="password" type="password" autoComplete="off" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
+          <input id="password" name="password" type="password" autoComplete="new-password" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         <div>
           <p className="block mb-2 text-xs text-gray-700 dark:text-gray-300">

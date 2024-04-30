@@ -441,7 +441,7 @@ export default function Home() {
 // - Na Pagina Inicial, ao fazer uma busca sem resultados informar que nao foram encontrados jogos no Tabuai.
 // - Na pagina Inicial (arquivo de crawlerLudopedia) arrumar o href dos links para ser href=tabuai.
 
-// - FAZER TODA LOGICA DE CIDADE (Buscar por cidade/estado/distancia filtro na pagina inicial) Mostrar cidade/estado nos cards e na pagina de ID.
+// - FAZER TODA LOGICA DE CIDADE(Buscar por cidade/estado/distancia filtro na pagina inicial) Mostrar cidade/estado nos cards e na pagina de ID.
 
 // - Formatar nos cards os nomes dos usuarios (ownerCard e OwnerOfertaCard).
 // - IMPORTANTE!!! Adicionar Quem está com a Maior Oferta do Produto (na pagina [id]).

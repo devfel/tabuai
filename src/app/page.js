@@ -148,11 +148,16 @@ export default function Home() {
       return [...games].sort((a, b) => {
         const gameA = a.attributes;
         const gameB = b.attributes;
+
+        const normalizePrice = (price) => {
+          return parseFloat(price.replace("R$ ", "").replace(".", "").replace(",", "."));
+        };
+
         switch (sortOption) {
           case "priceAsc":
-            return parseFloat(gameA.precoludopedia.replace("R$ ", "").replace(",", ".")) - parseFloat(gameB.precoludopedia.replace("R$ ", "").replace(",", "."));
+            return normalizePrice(gameA.precoludopedia) - normalizePrice(gameB.precoludopedia);
           case "priceDesc":
-            return parseFloat(gameB.precoludopedia.replace("R$ ", "").replace(",", ".")) - parseFloat(gameA.precoludopedia.replace("R$ ", "").replace(",", "."));
+            return normalizePrice(gameB.precoludopedia) - normalizePrice(gameA.precoludopedia);
           case "nameAsc":
             return gameA.bgnomeludopedia.localeCompare(gameB.bgnomeludopedia);
           case "nameDesc":

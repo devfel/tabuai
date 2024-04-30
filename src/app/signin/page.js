@@ -118,7 +118,7 @@ const SigninPage = () => {
           <label htmlFor="nomeUsuario" className="block mb-1">
             Nome Completo
           </label>
-          <input id="nomeUsuario" minLength="3" maxLength="40" type="text" autoComplete="off" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
+          <input id="nomeUsuario" name="nomeUsuario" minLength="3" maxLength="40" type="text" autoComplete="off" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         {/* <div>
           <label htmlFor="whatsapp" className="block mb-1">
@@ -163,6 +163,7 @@ const SigninPage = () => {
             Email
           </label>
           <input
+            name="email"
             minLength="6"
             maxLength="50"
             id="email"
@@ -181,7 +182,7 @@ const SigninPage = () => {
           <label htmlFor="password" className="block mb-1">
             Senha
           </label>
-          <input id="password" type="password" autoComplete="off" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
+          <input id="password" name="password" type="password" autoComplete="off" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         <div>
           <p className="block mb-2 text-xs text-gray-700 dark:text-gray-300">

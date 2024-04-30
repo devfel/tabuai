@@ -568,7 +568,7 @@ export default function Dashboard() {
           ) : (
             <div className="mt-2 bg-gray-300 py-2 px-4 text-sm rounded-md dark:text-gray-600">
               <p>
-                Nenhum jogo carregado da Ludopedia. Certifique-se de que seu <span className="font-semibold">Usuário na Ludopedia</span> acima esteja cadastrado corretamente. Atualizamos os jogos uma vez a cada 24 horas para evitar sobrecarga na Ludopedia.
+                Nenhum jogo seu foi carregado da Ludopedia. Se isso estiver errado certifique-se de que seu <span className="font-semibold">Usuário na Ludopedia</span> acima esteja cadastrado corretamente. Atualizamos os jogos uma vez a cada 24 horas para evitar sobrecarga na Ludopedia.
               </p>
             </div>
           )}

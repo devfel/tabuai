@@ -12,6 +12,7 @@ const SigninPage = () => {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [nomeUsuario, setNomeUsuario] = useState("");
+  const [usuarioLudopedia, setUsuarioLudopedia] = useState("");
   const [email, setEmail] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [password, setPassword] = useState("");
@@ -47,6 +48,7 @@ const SigninPage = () => {
       password,
       estado,
       cidade,
+      //usuarioLudopedia, //Had to comment this so it wouldnt break the API
     };
 
     // Conditionally add the whatsapp field if it's not empty removing spaces
@@ -118,13 +120,19 @@ const SigninPage = () => {
           </label>
           <input id="nomeUsuario" minLength="3" maxLength="40" type="text" autoComplete="off" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
-        <div>
+        {/* <div>
           <label htmlFor="whatsapp" className="block mb-1">
-            WhatsApp (Opcional)
+            WhatsApp <span className="font-semibold">(Opcional)</span>
           </label>
           <input id="whatsapp" type="text" autoComplete="off" value={whatsapp} onChange={handleWhatsAppChange} className="w-full border p-2 text-gray-900 rounded-lg" />{" "}
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
+          <label htmlFor="usuarioLudopedia" className="block mb-1">
+            Nome de Usuário na Ludopedia <span className="font-semibold">(Opcional)</span>
+          </label>
+          <input id="usuarioLudopedia" type="text" autoComplete="off" value={usuarioLudopedia} onChange={(e) => setUsuarioLudopedia(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" />
+        </div> */}
+        {/* <div>
           <label htmlFor="estado" className="block mb-1">
             Estado
           </label>
@@ -149,7 +157,7 @@ const SigninPage = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
         <div>
           <label htmlFor="email" className="block mb-1">
             Email
@@ -171,13 +179,13 @@ const SigninPage = () => {
         </div>
         <div>
           <label htmlFor="password" className="block mb-1">
-            Password
+            Senha
           </label>
           <input id="password" type="password" autoComplete="off" minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-2 text-gray-900 rounded-lg" required />
         </div>
         <div>
           <p className="block mb-2 text-xs text-gray-700 dark:text-gray-300">
-            <span className="font-bold">Importante:</span> Seu dados, como nome, endereço de email e número de whatsapp cadastrados serão compartilhados com outros usuários, por exemplo, com aqueles que receberem suas ofertas ou fizerem ofertas em seus anúncios.
+            <span className="font-bold">Importante:</span> Seus dados, como nome, endereço de email e número de whatsapp cadastrados serão compartilhados com outros usuários, por exemplo, com aqueles que receberem suas ofertas ou fizerem ofertas em seus anúncios.
           </p>
           <p className="block mb-1 text-xs text-gray-700 dark:text-gray-300">Ao fazer o cadastro e utilizar o sistema você concorda com essas condições.</p>
         </div>
@@ -195,7 +203,7 @@ const SigninPage = () => {
         </Link>
       </form>
       {showToastSignin && accCreatedSuccess && <ToastSignin message={`Conta criada com sucesso! 😁 Conectando em 3... 2...`} onDismiss={() => setShowToastSignin(false)} />}
-      {showToastSignin && !accCreatedSuccess && <ToastSignin message={`Tivemos um problema ao tentar criar sua conta, provável email já cadastrado. 😢 `} onDismiss={() => setShowToastSignin(false)} />}
+      {showToastSignin && !accCreatedSuccess && <ToastSignin message={`Tivemos um problema ao criar a conta, provável email ou whatsapp já cadastrado. 😢 `} onDismiss={() => setShowToastSignin(false)} />}
     </div>
   );
 };

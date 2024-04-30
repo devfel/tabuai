@@ -16,6 +16,11 @@ export default function Home() {
   const MAX_ITEMS_TOTAL = 900;
   const [sortOption, setSortOption] = useState("mostRecent");
 
+  const [ludopediaGames, setLudopediaGames] = useState([]);
+  const [isLudopediaGamesLoading, setIsLudopediaGamesLoading] = useState(true);
+  const [displayedLudopediaGames, setDisplayedLudopediaGames] = useState([]);
+
+  // ----- Fetch Tabuai Board Games -----
   useEffect(() => {
     async function fetchGames() {
       setIsLoading(true); // Start loading
@@ -63,6 +68,27 @@ export default function Home() {
     fetchGames();
   }, []);
 
+  // ------ Fetch Ludopedia games from My Database. ------
+  useEffect(() => {
+    const fetchLudopediaGames = async () => {
+      setIsLudopediaGamesLoading(true);
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_FELIZARDOBG_API_URL}/api/external-bgs?pagination[page]=1&pagination[pageSize]=9999`);
+        if (!response.ok) throw new Error("Failed to fetch Ludopedia games");
+        const { data } = await response.json();
+        // console.log("Fetching Ludopedia games..."); //DEBUG
+        // console.log(data); //DEBUG
+        setLudopediaGames(data);
+      } catch (error) {
+        console.error("Error fetching Ludopedia games:", error);
+      } finally {
+        setIsLudopediaGamesLoading(false);
+      }
+    };
+
+    fetchLudopediaGames();
+  }, []);
+
   function goToNextPage() {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   }
@@ -73,6 +99,22 @@ export default function Home() {
 
   function goToPage(page) {
     setCurrentPage(page);
+  }
+
+  // Function to Format the User Name (Nome Sobrenome)
+  function standardizeName(fullName) {
+    if (!fullName) return "Usuário Anônimo";
+
+    const names = fullName.trim().split(/\s+/); // Split by one or more spaces
+    if (names.length === 1) {
+      return names[0].charAt(0).toUpperCase() + names[0].slice(1).toLowerCase(); // Handle single name case
+    }
+
+    const firstName = names[0];
+    const lastName = names[names.length - 1];
+
+    // Capitalize first and last name ONLY
+    return [firstName, lastName].map((name) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()).join(" ");
   }
 
   useEffect(() => {
@@ -101,17 +143,46 @@ export default function Home() {
       });
     }
 
-    const sortedGames = sortGames(filtered);
+    // Function to sort Ludopedia games based on specific attributes
+    const sortLudopediaGames = (games) => {
+      return [...games].sort((a, b) => {
+        const gameA = a.attributes;
+        const gameB = b.attributes;
+        switch (sortOption) {
+          case "priceAsc":
+            return parseFloat(gameA.precoludopedia.replace("R$ ", "").replace(",", ".")) - parseFloat(gameB.precoludopedia.replace("R$ ", "").replace(",", "."));
+          case "priceDesc":
+            return parseFloat(gameB.precoludopedia.replace("R$ ", "").replace(",", ".")) - parseFloat(gameA.precoludopedia.replace("R$ ", "").replace(",", "."));
+          case "nameAsc":
+            return gameA.bgnomeludopedia.localeCompare(gameB.bgnomeludopedia);
+          case "nameDesc":
+            return gameB.bgnomeludopedia.localeCompare(gameA.bgnomeludopedia);
+          case "oldFirst":
+            return parseInt(a.id) - parseInt(b.id);
+          default:
+            return parseInt(b.id) - parseInt(a.id);
+        }
+      });
+    };
 
+    // ------ BLOCK RELATED TO GAMES - FILTERING, SORTING AND PAGINATION
+    const sortedGames = sortGames(filtered);
     const totalFiltered = sortedGames.length;
     setTotalPages(Math.ceil(totalFiltered / ITEMS_PER_PAGE));
-
     // Apply pagination to the filtered games
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
     const paginatedGames = sortedGames.slice(startIndex, endIndex);
-
     setFilteredGames(paginatedGames); // update again with the new paginated version
+    // ------
+
+    // ------ BLOCK RELATED TO LUDOPEDIA GAMES - FILTERING AND SORTING
+    // Filter and sort Ludopedia games based on the same input fields
+    const filteredLudopediaGames = ludopediaGames.filter((game) => game.attributes.bgnomeludopedia.toLowerCase().includes(lowerCaseQuery));
+    const sortedLudopediaGames = sortLudopediaGames(filteredLudopediaGames);
+    // Set the sorted games without pagination
+    setDisplayedLudopediaGames(sortedLudopediaGames);
+    // ------
   }, [searchQuery, currentPage, boardGames, sortOption]); //include all three states dependencies
 
   useEffect(() => {
@@ -207,6 +278,81 @@ export default function Home() {
             </button>
           </div>
         </div>
+
+        {/* Ludopedia Games Section */}
+        <div className="my-8">
+          <div className="flex items-center justify-between px-4 py-2 mt-2 bg-gray-800 border border-gray-800 rounded-lg min-h-16">
+            <h5 className="text-lg font-bold text-white">Anúncios na Ludopedia dos nossos usuários:</h5>
+          </div>
+          <div className="flex items-center justify-between px-4 py-2 mt-2 bg-gray-300 border border-gray-800 rounded-lg min-h-16">
+            <p className="text-xs md:text-sm font-base text-gray-950">
+              Todos os anúncios e links nesta seção foram obtidos da Ludopedia. O Tabuai não possui vínculo com a Ludopedia, nem assume responsabilidade pelos produtos anunciados. <br></br>Destacamos que não aprovamos negociações externas à Ludopedia dos produtos abaixo, reconhecemos e respeitamos a abrangência, popularidade e qualidade do serviço.
+            </p>
+          </div>
+
+          <div className="mt-2 flex items-center justify-center space-x-2">
+            <label className="text-sm font-medium text-gray-600">Ordenar: </label>
+            <div className="relative">
+              <select className="appearance-none bg-white border border-gray-300 text-gray-600 py-2 px-4 pr-8 rounded-lg shadow w-full md:w-56" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                <option value="mostRecent">Mais Recente Primeiro</option>
+                <option value="oldFirst">Mais Antigo Primeiro</option>
+                <option value="priceDesc">Preço (Maior Primeiro)</option>
+                <option value="priceAsc">Preço (Menor Primeiro)</option>
+                <option value="nameAsc">Nome (A-Z)</option>
+                <option value="nameDesc">Nome (Z-A)</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M5.71 7.29a1 1 0 011.42 0L10 10.17l2.86-2.88a1 1 0 111.41 1.41l-4 4a1 1 0 01-1.41 0l-4-4a1 1 0 010-1.42z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          {isLudopediaGamesLoading ? (
+            <div className="flex flex-col justify-center items-center p-4 bg-gray-100 border border-gray-200 rounded-lg mt-2">
+              <LoadingIndicator />
+              <span className="mt-2">Carregando Jogos da Ludopedia...</span>
+            </div>
+          ) : displayedLudopediaGames.length > 0 ? (
+            <div className="overflow-x-auto mt-4">
+              <table className="min-w-full text-sm divide-y divide-gray-200">
+                <thead className="bg-gray-400 text-white">
+                  <tr>
+                    <th className="px-1 py-2 text-xs md:text-sm text-left">V/L</th>
+
+                    <th className="px-1 py-2 text-xs md:text-sm text-left">Nome / Link Ludopedia</th>
+                    <th className="px-1 py-2 text-xs md:text-sm text-left">Preço/Lance</th>
+                    <th className="px-1 py-2 text-xs md:text-sm text-left hidden lg:table-cell">Condição</th>
+                    <th className="px-1 py-2 text-xs md:text-sm text-left hidden md:table-cell">UF</th>
+                    <th className="px-1 py-2 text-xs md:text-sm text-left hidden md:table-cell">Cidade</th>
+                    <th className="px-1 py-2 text-xs md:text-sm text-left">Usuário</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white">
+                  {displayedLudopediaGames.slice(0, ITEMS_PER_PAGE).map((bg) => (
+                    <tr key={bg.id}>
+                      <td className="px-1 py-1 text-xs md:text-sm" style={{ backgroundColor: bg.attributes.vendaouleilao === "Leilão" ? "#D2FAC6" : "#F2F7F6" }}>
+                        {bg.attributes.vendaouleilao}
+                      </td>
+                      <td className="px-1 py-1 text-xs md:text-sm">
+                        <a href={bg.attributes.linkprodutoludopedia} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:text-gray-950 hover:underline">
+                          {bg.attributes.bgnomeludopedia}
+                        </a>
+                      </td>
+                      <td className="px-1 py-1 text-xs md:text-sm">{bg.attributes.precoludopedia}</td>
+                      <td className="px-1 py-1 text-xs md:text-sm hidden lg:table-cell">{bg.attributes.condicaoludopedia}</td>
+                      <td className="px-1 py-1 text-xs md:text-sm hidden md:table-cell">{bg.attributes.federacaoludopedia}</td>
+                      <td className="px-1 py-1 text-xs md:text-sm hidden md:table-cell">{bg.attributes.cidadeludopedia}</td>
+                      <td className="px-1 py-1 text-xs md:text-sm">{standardizeName(bg.attributes.dononome)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="text-center py-4 text-gray-600">Nenhum Jogo dos nosso usuários com o filtro buscado foi encontrado na Ludopedia... :( </div>
+          )}
+        </div>
       </main>
     </div>
   );
@@ -270,3 +416,33 @@ export default function Home() {
 
 // Usuario Anonimo na resposta de pergunta de alguns jogos.
 // Borda do Minhas Perguntas esta arredonda mas é so border botton e deve ser removido o arredondado.
+
+// // MAIS TODOS RECENTES:
+// [V] - Testar com usuarioLudopedia sem jogos.
+// [V] - Testar com usuarioLudopedia inválido.
+// [V] - Testar com usuarioLudopedia já cadastrado no site Tabuai.
+// [V] - Testar com usuarioLudopedia com muitos jogos (varias paginas ludopedia).
+// [V] - Atualizar a cada 24 horas (Na verdade de preferencia durante madrugada e aleatorio para cada usuario) (Remover as informaçoes do usuario, e adicionar novamente com novas informaçoes pegadas)
+
+// [V] - Editar Informacoes no Site Tabuai (email, whatsapp, cidade, estado, usuarioLudopedia)
+// [V] - Remover informaçoes da criacao de usuario (Para uma melhor experiencia sua e dos outros usuarios recomendados completar seus dados).
+// [V] - Ao editar chamar novamente crawler para atualizar dados dos jogos na ludopedia.
+// [V] - Dashboard, exibir jogos puxados da ludopedia.
+// [V] - Dashboard, atualizar parte de Meus Jogos da Ludopedia depois de Atualizar Informações.
+// [V] - Página Principal, ver como vou exibir os jogos da ludopedia com as buscas.
+// [V] - Adicionar Nome do Owner na pagina [id] (COM FORMATACAO DE NOME COMPLETO STANDARDIZATION)
+// [V] - Dashboard (Error updating user profile: Error: Failed to update user profile) Quando usuario já esta cadastrado no tabuai.
+
+// - COFERIR DARKMODE (Dashboard e Pagina Principal apos alteracoes).
+
+// ---- ERROS A SEREM TRATADOS: -----
+// - No dashboard, ao cadastrar usuario na ludapedia, e tentar remover depois o sistema nao permite. (coloquei no codigo para nao mandar se vier em branco pois estava dando erro quando tinha dois em branco nos dados). (Provavelmente o mesmo acontece com Whatsapp)
+// - No dashboard, Meus Jogos Informar que nao tem jogos cadastrados e que nao tem curtidas/ofertas ainda.
+// - Na Pagina Inicial, ao fazer uma busca sem resultados informar que nao foram encontrados jogos no Tabuai.
+// - Na pagina Inicial (arquivo de crawlerLudopedia) arrumar o href dos links para ser href=tabuai.
+
+// - FAZER TODA LOGICA DE CIDADE (Buscar por cidade/estado/distancia filtro na pagina inicial) Mostrar cidade/estado nos cards e na pagina de ID.
+
+// - Formatar nos cards os nomes dos usuarios (ownerCard e OwnerOfertaCard).
+// - IMPORTANTE!!! Adicionar Quem está com a Maior Oferta do Produto (na pagina [id]).
+// - IMPORTANTE!!! Adicionar Aviso se o usuario tiver oferta em produto e nao for a maior dele (na pagina de Dashboard OwnerOfertaCard).

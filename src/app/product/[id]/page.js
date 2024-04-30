@@ -64,6 +64,7 @@ const ProductPage = ({ params }) => {
     return new Date(dateString).toLocaleDateString("pt-BR", options);
   }
 
+  // Function to Format the User Name (Nome Sobrenome)
   function standardizeName(fullName) {
     if (!fullName) return "Usuário Anônimo";
 
@@ -312,7 +313,7 @@ const ProductPage = ({ params }) => {
       Authorization: `Bearer ${token}`,
     };
 
-    console.log("Current User: " + currentUser.id);
+    // console.log("Current User: " + currentUser.id); // DEBUG
     const body = JSON.stringify({
       data: {
         Content: answer,
@@ -552,24 +553,30 @@ const ProductPage = ({ params }) => {
           </div>
           {/* Product info */}
 
-          <div className="mt-8 px-4 sm:px-0 sm:mt-16 lg:mt-0 lg:col-start-2 lg:col-span-1">
+          <div className="mt-8 px-4 sm:px-0 sm:mt-10 lg:mt-0 lg:col-start-2 lg:col-span-1">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200">{game.name}</h2>
-            <p className="mt-5 text-3xl text-gray-900 dark:text-gray-200">{`R$ ${game.price.toFixed(2)}`}</p>
-            <div className="mt-5 flex items-center text-[1.02rem] text-gray-700 dark:text-gray-300">
+            <p className="mt-4 text-3xl text-gray-900 dark:text-gray-200">{`R$ ${game.price.toFixed(2)}`}</p>
+            <div className="mt-4 flex items-center text-[1.02rem] text-gray-700 dark:text-gray-300">
               <span className="mr-2">Idioma:</span> <span className="font-bold mr-2">{game.idioma || "Não especificado"}</span>
               <LanguageFlag idioma={game.idioma} />
             </div>
-            <p className="text-[1.02rem] text-gray-700 mt-5 dark:text-gray-300">
+            <p className="text-[1.02rem] text-gray-700 mt-4 dark:text-gray-300">
               Condição: <span className="font-bold">{game.condition}</span>
               <Link href="/condicao-boardgames" className="cursor-pointer hover:bg-gray-950 ml-2 px-[10px] py-1 bg-gray-700 rounded-full text-white">
                 ?
               </Link>
             </p>
-            <p className="my-5 text-[1.02rem] text-gray-700 dark:text-gray-300">
+            <div className="mt-4 text-[1.02rem] text-gray-700 dark:text-gray-300">
+              <p>
+                Dono do Jogo: <span className="font-bold">{game.bgOwner?.attributes.nomeUsuario || "Usuário não disponível"}</span>
+              </p>
+            </div>
+
+            <p className="mt-4 text-[1.02rem] text-gray-700 dark:text-gray-300">
               Melhor Oferta Recebida: <span className="font-bold">{game.maiorOferta ? `R$ ${game.maiorOferta.toFixed(2)}` : "Nenhuma oferta ainda"}</span>
             </p>
 
-            <div className="mt-8">
+            <div className="mt-4">
               <div className="flex items-center gap-[2px]">
                 <label className="flex items-center gap-1 whitespace-nowrap">Oferta: R$</label>
                 <input type="text" value={`${offerValue.toFixed(2)}`} readOnly className="flex-grow min-w-24 px-4 py-2 border border-gray-300 bg-gray-200 rounded-md text-black font-bold text-center" />
@@ -715,7 +722,7 @@ const ProductPage = ({ params }) => {
       </main>
       {showToastInterest && <ToastOferta message={`Agora cê pode vê o contato do Dono em "Minha Conta".`} onDismiss={() => setShowToastOferta(false)} />}
       {showToastOferta && <ToastOferta message={`Sua oferta de R$ ${submittedOfferValue.toFixed(2)} foi realizada com Sucesso!`} onDismiss={() => setShowToastOferta(false)} />}
-      {showToastLogin && <ToastLogin message={`Você precisa estar logado para fazer uma oferta! É bem rapidinho.`} onDismiss={() => setShowToastLogin(false)} />}
+      {showToastLogin && <ToastLogin message={`Você precisa estar logado para fazer uma oferta ou curtir! É bem rapidinho.`} onDismiss={() => setShowToastLogin(false)} />}
       {showToastQuestion && <ToastSignin message={`Sua pergunta foi enviada com sucesso.`} onDismiss={() => setShowToastQuestion(false)} />}
       {showToastAnswer && <ToastSignin message={`Sua resposta foi enviada com sucesso.`} onDismiss={() => setShowToastAnswer(false)} />}
     </div>

@@ -24,7 +24,7 @@ function QuestionAnswerCard({ question }) {
   }
 
   return (
-    <div className="bg-gray-300 border-b-2 py-3 border-gray-100 px-2 rounded-md text-sm">
+    <div className="bg-gray-300 border-b-2 py-3 border-gray-100 px-2 text-sm">
       <Link href={`/product/${question.attributes.board_game.data.id}`} passHref>
         <p className="text-sm  text-blue-950 text-center hover:text-gray-700 hover:underline transition-colors duration-200 ease-in-out">{question.attributes.board_game.data.attributes.Title}</p>
       </Link>

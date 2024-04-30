@@ -350,7 +350,8 @@ export default function Home() {
               </table>
             </div>
           ) : (
-            <div className="text-center py-4 text-gray-600">Nenhum Jogo dos nosso usuários com o filtro buscado foi encontrado na Ludopedia... :( </div>
+            <div className="text-center py-4 text-gray-600">Em Construção... </div>
+            // <div className="text-center py-4 text-gray-600">Nenhum Jogo dos nosso usuários com o filtro buscado foi encontrado na Ludopedia... :( </div>
           )}
         </div>
       </main>

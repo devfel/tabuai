@@ -73,7 +73,7 @@ const SigninPage = () => {
       setaccCreatedSuccess(true);
       login(data.jwt, data.user.id);
       setShowToastSignin(true);
-      setTimeout(() => router.push("/"), 2000);
+      setTimeout(() => router.push("/dashboard"), 2000);
     } catch (error) {
       console.error("Error logging in:", error);
       setaccCreatedSuccess(false);

@@ -12,6 +12,7 @@ import ToastLogin from "../../components/ToastLogin";
 import ToastSignin from "../../components/ToastSignin";
 import { useAuth } from "../../../context/AuthContext";
 import LoadingIndicator from "../../components/LoadingIndicator";
+import municipalities from "../../data/municipios.json";
 
 const ProductPage = ({ params }) => {
   const [game, setGame] = useState(null);
@@ -149,6 +150,9 @@ const ProductPage = ({ params }) => {
           };
         });
 
+        const cidadeName = municipalities.cities.find((c) => c.id === parseInt(json.data.attributes.owner.data.attributes.cidade))?.name || "Localização não disponível";
+        const estadoName = municipalities.states[json.data.attributes.owner.data.attributes.estado] || "";
+
         // Set the game state with the processed images
         setGame({
           id: json.data.id,
@@ -162,6 +166,8 @@ const ProductPage = ({ params }) => {
           images: gameImages,
           questions: questionsWithAnswers,
           bgOwner: json.data.attributes.owner.data,
+          cidade: cidadeName,
+          estado: estadoName,
         });
 
         setOfferValue(json.data.attributes.Value); // Set the initial offer value to the game price
@@ -313,7 +319,6 @@ const ProductPage = ({ params }) => {
       Authorization: `Bearer ${token}`,
     };
 
-    // console.log("Current User: " + currentUser.id); // DEBUG
     const body = JSON.stringify({
       data: {
         Content: answer,
@@ -569,6 +574,9 @@ const ProductPage = ({ params }) => {
             <div className="mt-4 text-[1.02rem] text-gray-700 dark:text-gray-300">
               <p>
                 Dono do Jogo: <span className="font-bold">{game.bgOwner?.attributes.nomeUsuario || "Usuário não disponível"}</span>
+              </p>
+              <p>
+                Cidade: <span className="font-bold">{game.cidade + ", " + game.estado || "-"}</span>
               </p>
             </div>
 
